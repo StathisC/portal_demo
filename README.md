@@ -1,3 +1,5 @@
+> **Κλώνος/demo** — αντίγραφο του OptikiTec Portal για δοκιμές/πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet. Δεν έχει ακόμα δικό του deployment/Sheet/secrets — βλ. SETUP.md.
+
 # OptikiTec — Σύστημα Αδειών (Portal)
 
 Cloudflare Worker: login (τεχνικοί με PIN, TL/backoffice με Google SSO), hub UI,
@@ -18,7 +20,6 @@ Cloudflare Worker: login (τεχνικοί με PIN, TL/backoffice με Google S
 | `hub.html` | Κεντρικό UI μετά το login — inline φόρμες/πίνακες, καλεί `/api/leaves/*` |
 | `wrangler.toml` | Worker config, KV binding, λίστα secrets (comments) |
 | `SETUP.md` | Πλήρης οδηγός εγκατάστασης (Sheet δομή, Worker secrets, Cloudflare Access, WIF) |
-| `*-mockup.html` | Παλιά design mockups (standalone, όχι λειτουργικά, μόνο για reference) |
 
 ## Auth αρχιτεκτονική
 
