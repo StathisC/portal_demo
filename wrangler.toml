@@ -1,4 +1,4 @@
-name = "optikitec-portal"
+name = "portal-demo"
 compatibility_date = "2024-09-23"
 main = "src/index.js"
 
@@ -9,7 +9,7 @@ binding = "ASSETS"
 
 [[kv_namespaces]]
 binding = "TECHNICIAN_AUTH"
-id = "dca4f7a233554a9d9b7905dc416dda50"
+id = "2797c6382d0c4d44972813b656b993d0"
 
 # Αποθήκευση συνημμένων (PDF/Word) για το tab "Ενημερώσεις/Οδηγίες" — KV αντί
 # για R2 γιατί το R2 δεν είναι ενεργοποιημένο στο Cloudflare account (χρειάζεται
@@ -17,14 +17,14 @@ id = "dca4f7a233554a9d9b7905dc416dda50"
 # τυπικά PDF/Word οδηγιών. Βλ. src/announcements.js.
 [[kv_namespaces]]
 binding = "ANNOUNCEMENTS_FILES"
-id = "a1e61ef3692943cdb7bf7d89dcd0eeba"
+id = "f8e529ccac744392adbb9a16d724e112"
 
 # Αποθήκευση δικαιολογητικού (PDF) αναρρωτικής άδειας — ίδιο μοτίβο/όριο με
 # ANNOUNCEMENTS_FILES παραπάνω, ξεχωριστό namespace. Βλ. src/leaves.js
 # (uploadLeaveAttachment/getLeaveAttachmentById).
 [[kv_namespaces]]
 binding = "LEAVE_FILES"
-id = "9856a0c0607f4bdf825410830c0f3335"
+id = "f017849e63864f30bb382e4f214f4eeb"
 
 # Αποθήκευση συνημμένων τεχνικού (βιογραφικό, ταυτότητα/διαβατήριο, άδεια
 # διαμονής) — ίδιο μοτίβο/όριο με τα παραπάνω, ξεχωριστό namespace. Βλ.
@@ -33,7 +33,7 @@ id = "9856a0c0607f4bdf825410830c0f3335"
 # χρήστη λόγω ευαισθησίας δεδομένων.
 [[kv_namespaces]]
 binding = "EMPLOYEE_FILES"
-id = "114a16a9a00842fb9d60c5ed5ecc9bf2"
+id = "c2328486a66146a2b86de6503a57339d"
 
 # Αποθήκευση φωτογραφιών παραλαβής οχήματος (πολλαπλές ανά χρέωση) και
 # συνημμένου συμβάντος ατυχήματος — ίδιο μοτίβο/όριο με τα παραπάνω,
@@ -41,14 +41,14 @@ id = "114a16a9a00842fb9d60c5ed5ecc9bf2"
 # και src/fleet.js (reportVehicleAccident/uploadAccidentAttachment).
 [[kv_namespaces]]
 binding = "FLEET_FILES"
-id = "f15ebc6278704093833152da77fdfb99"
+id = "f30da596d99f428685905b7ec2436c41"
 
 # Αποθήκευση εικόνας ψηφιακής υπογραφής (canvas PNG) στο έγγραφο παράδοσης/
 # παραλαβής — ίδιο μοτίβο/όριο με τα παραπάνω, ξεχωριστό namespace. Βλ.
 # src/handover.js (signHandoverDocument/getHandoverSignature).
 [[kv_namespaces]]
 binding = "HANDOVER_FILES"
-id = "571c43285ea643ebbc5b5a8310644391"
+id = "109be017dfd142f685bd992183428e00"
 
 # Καθημερινό backup (στιγμιότυπο JSON) όλων των φύλλων του Google Sheet —
 # ρητή απαίτηση χρήστη (15/08/2026), βλ. src/backup.js. Κρατάει τελευταία 14
@@ -57,7 +57,7 @@ id = "571c43285ea643ebbc5b5a8310644391"
 # JSON, λήψη/restore χειροκίνητα αν χρειαστεί ποτέ.
 [[kv_namespaces]]
 binding = "SHEET_BACKUPS"
-id = "2ae3967bc16f40058656f52e60a3d61f"
+id = "ff6ad967b28c4591917fdae6911cc112"
 
 # Εβδομαδιαία (κάθε Δευτέρα 06:00 UTC) + μηνιαία (1η κάθε μήνα 06:00 UTC)
 # email αναφορά ανά Team Leader, ημερήσια σύνοψη χρεώσεων στις "0 16 * * *"
