@@ -1,19 +1,31 @@
 /**
- * Google Sheets API v4 client για το Worker — αυθεντικοποίηση μέσω
- * Workload Identity Federation (WIF), ΧΩΡΙΣ Google-issued service account
- * key. Το Worker είναι ο δικός του OIDC identity provider: υπογράφει ένα
- * JWT με δικό του (Cloudflare-secret) RSA private key, το Google Cloud
- * STS το ανταλλάσσει για ένα federated token, και μετά γίνεται
- * impersonation του πραγματικού service account (IAM Credentials API)
- * για να πάρουμε access token με scope Sheets.
+ * Google Sheets API v4 client για το Worker — δύο υποστηριζόμενοι τρόποι
+ * αυθεντικοποίησης, αυτόματη επιλογή βάσει ποια secrets υπάρχουν:
  *
- * Γιατί έτσι: η εταιρεία έχει org policy που μπλοκάρει τη δημιουργία
- * Google-issued service account keys (iam.disableServiceAccountKeyCreation,
- * legacy + managed) και δεν θέλαμε να το πειράξουμε. Το WIF flow δεν
- * δημιουργεί ΚΑΝΕΝΑ Google service account key -> το policy δεν
- * ενεργοποιείται καν, το org policy μένει ανέγγιχτο.
+ * (Α) Workload Identity Federation (WIF), ΧΩΡΙΣ Google-issued service
+ * account key. Το Worker είναι ο δικός του OIDC identity provider:
+ * υπογράφει ένα JWT με δικό του (Cloudflare-secret) RSA private key, το
+ * Google Cloud STS το ανταλλάσσει για ένα federated token, και μετά
+ * γίνεται impersonation του πραγματικού service account (IAM Credentials
+ * API) για να πάρουμε access token με scope Sheets. Γιατί έτσι στο ΚΥΡΙΟ
+ * (production) OptikiTec deployment: η εταιρεία έχει org policy που
+ * μπλοκάρει τη δημιουργία Google-issued service account keys
+ * (iam.disableServiceAccountKeyCreation, legacy + managed) και δεν θέλαμε
+ * να το πειράξουμε. Το WIF flow δεν δημιουργεί ΚΑΝΕΝΑ Google service
+ * account key -> το policy δεν ενεργοποιείται καν.
  *
- * Χρειάζεται 3 Worker secrets (βλ. SETUP.md):
+ * (Β) Απλό, κατεβασμένο Google service account JSON key (`GOOGLE_SERVICE_
+ * ACCOUNT_KEY` secret, το ΠΕΡΙΕΧΟΜΕΝΟ ολόκληρου του .json) — τυπικό OAuth2
+ * JWT-bearer flow (RFC 7523), ΕΝΑ HTTP round-trip αντί για τα δύο βήματα
+ * (STS exchange + impersonation) του (Α). Προστέθηκε 06/09/2026 για το
+ * demo/κλώνο `portal_demo` — ρητή απόφαση χρήστη, αφού εκεί δεν υπάρχει ο
+ * περιορισμός org policy του (Α), άρα δεν έχει νόημα η επιπλέον πολυπλοκότητα
+ * WIF pool/provider/impersonation binding μόνο για δοκιμή/πειραματισμό.
+ * Βλ. `getAccessTokenViaServiceAccountKey()` παρακάτω. Το (Α) ΔΕΝ αγγίχτηκε
+ * καθόλου — αν λείπει το `GOOGLE_SERVICE_ACCOUNT_KEY`, η σύνδεση συνεχίζει
+ * να γίνεται όπως πάντα μέσω WIF, μηδενικό ρίσκο για το production.
+ *
+ * Χρειάζεται 3 Worker secrets ΓΙΑ ΤΟ (Α) (βλ. SETUP.md), Ή 1 secret ΓΙΑ ΤΟ (Β):
  *   WIF_PRIVATE_KEY            (πλήρες PEM, δικό μας keypair — ΟΧΙ Google key)
  *   WIF_PROVIDER_RESOURCE      (π.χ. projects/123456789/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider)
  *   GOOGLE_SERVICE_ACCOUNT_EMAIL (το service account που κάνουμε impersonate, π.χ. optikitec-portal-sheets@optikitec-portal.iam.gserviceaccount.com)
@@ -37,6 +49,7 @@ const WIF_PUBLIC_N =
 const WIF_PUBLIC_E = "AQAB";
 
 const STS_URL = "https://sts.googleapis.com/v1/token";
+const OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets";
 const CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
 
@@ -163,6 +176,57 @@ async function impersonateServiceAccount(env, federatedAccessToken) {
  * Access token cache στο KV (TECHNICIAN_AUTH namespace) — αποφεύγουμε να
  * κάνουμε ολόκληρο το 2-βημάτων WIF exchange σε κάθε request.
  */
+/**
+ * Απλή αυθεντικοποίηση με κατεβασμένο Google service account JSON key —
+ * βλ. σχόλιο (Β) στην κορυφή του αρχείου. Ένα JWT υπογεγραμμένο με το
+ * ΙΔΙΟ private key του service account (`key.private_key`, ήδη PKCS8 PEM
+ * μέσα στο κατεβασμένο JSON), ανταλλάσσεται απευθείας στο Google OAuth2
+ * token endpoint (grant_type jwt-bearer) — καμία ενδιάμεση WIF/STS/
+ * impersonation κλήση.
+ */
+async function getAccessTokenViaServiceAccountKey(env) {
+  const key = JSON.parse(env.GOOGLE_SERVICE_ACCOUNT_KEY);
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: "RS256", typ: "JWT" };
+  const claims = {
+    iss: key.client_email,
+    scope: SHEETS_SCOPE,
+    aud: OAUTH_TOKEN_URL,
+    iat: now,
+    exp: now + 3600,
+  };
+  const signingInput = `${base64UrlEncodeStr(JSON.stringify(header))}.${base64UrlEncodeStr(JSON.stringify(claims))}`;
+
+  const keyBuf = pemToArrayBuffer(key.private_key);
+  const cryptoKey = await crypto.subtle.importKey(
+    "pkcs8",
+    keyBuf,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", cryptoKey, new TextEncoder().encode(signingInput));
+  const assertion = `${signingInput}.${base64UrlEncodeBuf(sig)}`;
+
+  const res = await fetch(OAUTH_TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion,
+    }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Google OAuth2 token exchange (service account key) απέτυχε: ${res.status} ${text}`);
+  }
+  const data = await res.json(); // { access_token, expires_in, token_type }
+  return {
+    token: data.access_token,
+    exp: Math.floor(Date.now() / 1000) + (data.expires_in || 3600),
+  };
+}
+
 async function getAccessToken(env) {
   const cacheKey = "google:sheets:access_token";
   if (env.TECHNICIAN_AUTH) {
@@ -172,12 +236,18 @@ async function getAccessToken(env) {
     }
   }
 
-  const federated = await exchangeForFederatedToken(env);
-  const impersonated = await impersonateServiceAccount(env, federated.access_token);
-
-  const token = impersonated.accessToken;
-  const expMs = Date.parse(impersonated.expireTime);
-  const exp = Number.isFinite(expMs) ? Math.floor(expMs / 1000) : Math.floor(Date.now() / 1000) + 3600;
+  let token, exp;
+  if (env.GOOGLE_SERVICE_ACCOUNT_KEY) {
+    const result = await getAccessTokenViaServiceAccountKey(env);
+    token = result.token;
+    exp = result.exp;
+  } else {
+    const federated = await exchangeForFederatedToken(env);
+    const impersonated = await impersonateServiceAccount(env, federated.access_token);
+    token = impersonated.accessToken;
+    const expMs = Date.parse(impersonated.expireTime);
+    exp = Number.isFinite(expMs) ? Math.floor(expMs / 1000) : Math.floor(Date.now() / 1000) + 3600;
+  }
 
   if (env.TECHNICIAN_AUTH) {
     const ttl = Math.max(60, exp - Math.floor(Date.now() / 1000) - 60);

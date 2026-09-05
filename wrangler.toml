@@ -82,10 +82,20 @@ crons = ["0 6 * * 1", "0 6 1 * *", "0 16 * * *", "0 3 * * *", "0 5 * * *"]
 #   SESSION_SECRET                -> για την υπογραφή του session cookie των τεχνικών
 #   ADMIN_SECRET                  -> για /api/admin/set-pin (seed PINs τεχνικών)
 #
-# Google Sheets API μέσω Workload Identity Federation (χωρίς service account key):
+# Google Sheets API — ΔΥΟ τρόποι, διάλεξε ΕΝΑΝ (βλ. src/sheets.js):
+#
+# (Α) Workload Identity Federation (χωρίς service account key, ίδιο με το
+#     production OptikiTec deployment — μόνο αν υπάρχει org policy που
+#     μπλοκάρει service account keys):
 #   WIF_PRIVATE_KEY               -> δικό μας RSA private key (PEM), ΟΧΙ Google-issued
 #   WIF_PROVIDER_RESOURCE          -> π.χ. projects/123456789/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider
 #   GOOGLE_SERVICE_ACCOUNT_EMAIL   -> service account που γίνεται impersonate (Editor στο Sheet)
+#
+# (Β) Απλό service account JSON key (ΣΥΝΙΣΤΑΤΑΙ για αυτό το demo — πολύ
+#     λιγότερα βήματα, βλ. SETUP.md §3):
+#   GOOGLE_SERVICE_ACCOUNT_KEY     -> ΟΛΟΚΛΗΡΟ το περιεχόμενο του κατεβασμένου .json key
+#
+# Και στις δύο περιπτώσεις χρειάζεται:
 #   GOOGLE_SHEET_ID                -> το ID του spreadsheet από το URL
 #
-# Βλ. SETUP.md για αναλυτικές οδηγίες Workload Identity Pool/Provider setup.
+# Βλ. SETUP.md για αναλυτικές οδηγίες.

@@ -2,6 +2,14 @@
 
 ---
 
+## Demo clone setup — 06/09/2026
+
+Αυτό το repo δημιουργήθηκε ως 1:1 λειτουργικός κλώνος του `optikitec-portal`, με νέο Cloudflare Worker (`portal-demo`, https://portal-demo.chsstathis.workers.dev) + 7 νέα KV namespaces (δικά τους IDs, βλ. wrangler.toml) — καμία κοινή υποδομή με το production OptikiTec. Εξαιρέθηκαν από τον κλώνο τα OptikiTec business docs (οδηγοί PDF, κοστολόγιο, παρουσίαση), τα παλιά design mockups, το ασύνδετο `synergia-app_2/`, και το ορφανό διπλότυπο "Αξιολόγηση Υπαλλήλων.html" (ταυτόσημο με evaluation.html).
+
+**Νέο: εναλλακτικό, απλούστερο Google Sheets auth** (`src/sheets.js`) — ρητή απόφαση χρήστη, το demo project δεν έχει τον org policy περιορισμό που ανάγκασε το production να χρησιμοποιήσει WIF. Πρόσθεσα `getAccessTokenViaServiceAccountKey()` — απλό, κατεβασμένο service account JSON key (`GOOGLE_SERVICE_ACCOUNT_KEY` secret), τυπικό OAuth2 JWT-bearer flow, ΕΝΑ HTTP round-trip αντί για το two-step STS+impersonation του WIF. Το `getAccessToken()` διαλέγει αυτόματα: αν υπάρχει το secret, χρησιμοποιεί το απλό flow· αλλιώς κάνει fallback στο ΑΜΕΤΑΒΛΗΤΟ WIF flow (ίδιο με το production — μηδενικό ρίσκο εκεί, αφού αυτό το αρχείο υπάρχει μόνο σε αυτό το demo repo). Βλ. SETUP.md §3.0 για τα βήματα.
+
+---
+
 # OptikiTec Portal — κατάσταση έργου
 
 Σύστημα αδειών + στόλου + χρεώσεων για την OptikiTec (κατασκευές FTTH, ~40 τεχνικοί).

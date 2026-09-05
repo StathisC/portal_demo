@@ -273,7 +273,40 @@ npx wrangler deploy
 
 ---
 
-## 3. Google Sheets API — Workload Identity Federation (χωρίς service account key)
+## 3. Google Sheets API — σύνδεση
+
+Δύο τρόποι· διάλεξε **έναν**. Το `src/sheets.js` ανιχνεύει αυτόματα ποιος
+χρησιμοποιείται: αν υπάρχει το secret `GOOGLE_SERVICE_ACCOUNT_KEY`, τρέχει
+το (Β)· αλλιώς κάνει fallback στο (Α).
+
+### 3.0 (Β) Απλό service account JSON key — ΣΥΝΙΣΤΑΤΑΙ για demo/πειραματισμό
+
+Πολύ λιγότερα βήματα από το WIF παρακάτω — κατάλληλο ΜΟΝΟ αν το Google Cloud
+project σου ΔΕΝ έχει org policy που μπλοκάρει service account keys (το
+production OptikiTec project έχει τέτοιο policy, γι' αυτό εκεί χρησιμοποιείται
+το WIF (Α) — ένα καινούριο/προσωπικό project συνήθως δεν έχει αυτόν τον
+περιορισμό).
+
+1. GCP Console → φτιάξε (ή διάλεξε υπάρχον) project.
+2. **APIs & Services → Library** → ενεργοποίησε **Google Sheets API**.
+3. **IAM & Admin → Service Accounts → Create Service Account** (π.χ.
+   `portal-demo-sheets`) → Create and Continue → Done.
+4. Άνοιξε το service account → tab **Keys** → **Add Key → Create new key**
+   → τύπος **JSON** → κατέβασμα.
+5. Άνοιξε το νέο Google Sheet (βλ. §1) → **Share** → πρόσθεσε το email του
+   service account (π.χ. `portal-demo-sheets@<project-id>.iam.gserviceaccount.com`)
+   → **Editor**.
+6. Βάλε ΟΛΟΚΛΗΡΟ το περιεχόμενο του κατεβασμένου .json ως ένα Worker secret:
+   ```bash
+   npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_KEY
+   # επικόλλησε όλο το JSON (μία γραμμή ή πολλές, δεν πειράζει)
+
+   npx wrangler secret put GOOGLE_SHEET_ID
+   # το ID από το URL: https://docs.google.com/spreadsheets/d/<ΑΥΤΟ>/edit
+   ```
+7. Τέλος — παράλειψε το §3.1-3.6 παρακάτω (αυτά είναι μόνο για το (Α) WIF).
+
+### 3.1-3.6 (Α) Workload Identity Federation (χωρίς service account key, εναλλακτικό)
 
 Ο Worker μιλάει απευθείας με το Sheet μέσω Sheets API v4. Αντί για ένα κλασικό
 downloadable service account JSON key (μπλοκάρεται από org policy
