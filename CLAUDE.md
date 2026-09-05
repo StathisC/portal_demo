@@ -8,6 +8,30 @@
 
 **Νέο: εναλλακτικό, απλούστερο Google Sheets auth** (`src/sheets.js`) — ρητή απόφαση χρήστη, το demo project δεν έχει τον org policy περιορισμό που ανάγκασε το production να χρησιμοποιήσει WIF. Πρόσθεσα `getAccessTokenViaServiceAccountKey()` — απλό, κατεβασμένο service account JSON key (`GOOGLE_SERVICE_ACCOUNT_KEY` secret), τυπικό OAuth2 JWT-bearer flow, ΕΝΑ HTTP round-trip αντί για το two-step STS+impersonation του WIF. Το `getAccessToken()` διαλέγει αυτόματα: αν υπάρχει το secret, χρησιμοποιεί το απλό flow· αλλιώς κάνει fallback στο ΑΜΕΤΑΒΛΗΤΟ WIF flow (ίδιο με το production — μηδενικό ρίσκο εκεί, αφού αυτό το αρχείο υπάρχει μόνο σε αυτό το demo repo). Βλ. SETUP.md §3.0 για τα βήματα.
 
+**Bootstrap του Google Sheet (18 tabs + headers) — έτοιμο, `scripts/`**: αντί να
+δημιουργήσει κανείς χειροκίνητα τα ~18 φύλλα/tabs με τις σωστές επικεφαλίδες
+(βλ. §Χειροκίνητα βήματα παρακάτω, στο κυρίως documentation του production),
+έγινε `scripts/build_demo_sheet.py` (openpyxl) — παράγει ένα .xlsx με ΟΛΑ τα
+sheets (Άδειες, Υπάλληλοι, TeamLeaders, Backoffice, Directors, Στόλος,
+ΑτυχήματαΟχημάτων, Εξοπλισμός, EPass, SIMs, Χρεώσεις, Συνεργεία, Ενημερώσεις,
+ΕρωτηματαΔιαθεσιμότητας, ΑπαντησειςΔιαθεσιμότητας, ΕγγραφαΠαράδοσης, Έγγραφα,
+AuditLog) και τη σωστή σειρά επικεφαλίδων σε κάθε ένα — οι επικεφαλίδες
+αντλήθηκαν απευθείας από τα `*_HEADER_ORDER` constants του production `src/*.js`
+(source of truth, όχι από ενδεχομένως ξεπερασμένο prose), ΟΧΙ από το SETUP.md
+του production repo. Το `.xlsx` που παρήγαγε το script (`scripts/portal-demo-sheet-bootstrap.xlsx`)
+ανέβηκε ήδη στο Google Drive του χρήστη (`s.xronis@optikitec.gr`) ως
+"OptikiTec Portal DEMO — Sheet (bootstrap, ανοίξτε με Google Sheets).xlsx".
+**Εναπομένον χειροκίνητο βήμα (ο χρήστης):** άνοιγμα του αρχείου στο Google
+Drive → δεξί κλικ (ή Αρχείο) → «Άνοιγμα με» → Google Sheets (η αυτόματη
+μετατροπή μέσω του Google Drive MCP connector `create_file` απέτυχε με
+"Invalid conversion requested" — άγνωστη αιτία, πιθανό server-side όριο του
+connector· το raw .xlsx upload λειτούργησε κανονικά, άρα το manual
+"Άνοιγμα με Google Sheets" είναι αξιόπιστη εναλλακτική, ένα μόνο κλικ) — αυτό
+μετατρέπει το αρχείο σε πραγματικό Google Sheet με όλα τα 18 tabs/headers ήδη
+έτοιμα. Μετά: αντιγραφή του Sheet ID από το URL για το `GOOGLE_SHEET_ID`
+secret, και μοίρασμα (Share) του Sheet με το email του service account
+(`client_email` μέσα στο κατεβασμένο JSON key) ως Editor — βλ. SETUP.md §3.0.
+
 ---
 
 # OptikiTec Portal — κατάσταση έργου
