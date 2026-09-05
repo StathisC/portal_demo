@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OptikiTec Portal — Σύνδεση</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  :root{
+    --deep:#020A18; --deep-2:#04122B;
+    --cyan:#2E9BFF; --cyan-soft:#4FB3FF;
+    --txt:#EAF2FF; --txt-dim:#9BB0CC; --txt-faint:#6B7F9C;
+    --glass:rgba(12,26,48,0.72); --glass-line:rgba(120,160,220,0.16);
+    --red:#FF6B6E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{min-height:100%;}
+  body{
+    background:var(--deep); color:var(--txt); font-family:'Inter',sans-serif;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:40px 24px; position:relative; overflow-x:hidden;
+  }
+
+  /* ---------- fiber-optic background ---------- */
+  .bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+  .bg .base{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(1200px 700px at 78% 50%, #0E3A6B 0%, #072448 38%, transparent 72%),
+      radial-gradient(900px 600px at 12% 22%, rgba(11,42,90,0.55) 0%, transparent 60%),
+      linear-gradient(160deg, #020A18 0%, #04142E 55%, #020A18 100%);
+  }
+  .bg .burst{
+    position:absolute; top:50%; left:78%; width:1400px; height:1400px;
+    transform:translate(-50%,-50%);
+    background:
+      radial-gradient(circle, rgba(120,200,255,0.55) 0%, rgba(60,150,255,0.16) 8%, transparent 42%);
+    filter:blur(2px);
+  }
+  .bg .rays{position:absolute; top:50%; left:78%; width:1600px; height:1600px; transform:translate(-50%,-50%); opacity:0.55;}
+  .bg .grid{
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(90,150,220,0.05) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(90,150,220,0.05) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(900px 600px at 50% 50%, #000 0%, transparent 78%);
+    -webkit-mask-image:radial-gradient(900px 600px at 50% 50%, #000 0%, transparent 78%);
+  }
+
+  /* ---------- layout ---------- */
+  .shell{
+    position:relative; z-index:1; width:100%; max-width:1180px;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center;
+  }
+
+  /* ---------- left / hero ---------- */
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:100px;
+    background:rgba(46,155,255,0.10); border:1px solid rgba(79,179,255,0.28);
+    font-size:12px; font-weight:600; color:var(--cyan-soft); margin-bottom:28px;
+  }
+  .badge .dot{width:6px; height:6px; border-radius:50%; background:#3DDC97; box-shadow:0 0 8px #3DDC97;}
+
+  h1{
+    font-size:52px; line-height:1.12; font-weight:700; letter-spacing:-0.02em;
+    color:#fff; margin-bottom:22px;
+  }
+  h1 .accent{color:var(--cyan); }
+  .lede{font-size:15.5px; line-height:1.65; color:var(--txt-dim); max-width:480px; margin-bottom:30px;}
+
+  .pills{display:flex; gap:12px; flex-wrap:wrap;}
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:100px;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09);
+    font-size:12.5px; font-weight:600; color:var(--txt-dim);
+  }
+  .pill .dot{width:6px; height:6px; border-radius:50%;}
+  .pill .dot.green{background:#3DDC97;}
+  .pill .dot.cyan{background:var(--cyan);}
+
+  /* ---------- right / auth card ---------- */
+  .card{
+    background:var(--glass); border:1px solid var(--glass-line); border-radius:20px;
+    padding:32px 30px 26px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 30px 70px rgba(0,0,0,0.45);
+  }
+  .card h2{font-size:19px; font-weight:700; color:#fff; margin-bottom:6px;}
+  .card .sub{font-size:13px; color:var(--txt-faint); margin-bottom:22px;}
+
+  .tabs{display:flex; gap:4px; padding:5px; background:rgba(255,255,255,0.045); border:1px solid rgba(255,255,255,0.07); border-radius:12px; margin-bottom:26px;}
+  .tab{
+    flex:1; text-align:center; padding:11px 6px; border-radius:9px; font-size:12.5px; font-weight:600;
+    color:var(--txt-faint); cursor:pointer; border:none; background:transparent; font-family:'Inter',sans-serif;
+    transition:background .15s, color .15s; line-height:1.3;
+  }
+  .tab.active{background:rgba(255,255,255,0.09); color:#fff;}
+  .tab:hover:not(.active){color:var(--txt-dim);}
+
+  .panel h3{font-size:14.5px; font-weight:700; color:#fff; margin-bottom:5px;}
+  .panel p.hint{font-size:12.5px; color:var(--txt-faint); margin-bottom:18px; line-height:1.5;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:11px; font-weight:600; color:var(--txt-faint); margin-bottom:7px; text-transform:uppercase; letter-spacing:0.05em;}
+  .field input{
+    width:100%; padding:12px 13px; border-radius:10px;
+    border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.045);
+    font-size:14px; font-family:'Inter',sans-serif; color:#fff;
+  }
+  .field input::placeholder{color:#54688A;}
+  .field input:focus{outline:none; border-color:rgba(46,155,255,0.55); background:rgba(46,155,255,0.07);}
+  .field input[type="password"]{letter-spacing:6px; font-weight:700;}
+
+  .btn{
+    width:100%; border:none; padding:13px 16px; border-radius:11px; font-size:13.5px; font-weight:600;
+    cursor:pointer; font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:9px;
+    text-decoration:none;
+  }
+  .btn-google{
+    background:rgba(255,255,255,0.055); color:#fff; border:1px solid rgba(255,255,255,0.12);
+    transition:background .15s, border-color .15s;
+  }
+  .btn-google:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--cyan) 0%, #1B7FE0 100%); color:#fff; margin-top:4px;
+    box-shadow:0 8px 22px rgba(46,155,255,0.25);
+  }
+  .btn-primary:disabled{opacity:0.5; cursor:not-allowed; box-shadow:none;}
+  .gicon{width:16px; height:16px; flex-shrink:0;}
+
+  .error{
+    background:rgba(255,107,110,0.12); color:var(--red); border:1px solid rgba(255,107,110,0.3);
+    font-size:12px; font-weight:600; padding:10px 12px; border-radius:9px; margin-bottom:14px; display:none;
+  }
+  .error.show{display:block;}
+
+  .note{text-align:center; font-size:11.5px; color:var(--txt-faint); margin-top:16px; line-height:1.5;}
+
+  .card-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:24px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.07);
+    font-size:11.5px; color:#4E6183;
+  }
+  .card-foot .links{display:flex; gap:16px;}
+  .card-foot a{color:#4E6183; text-decoration:none;}
+  .card-foot a:hover{color:var(--txt-dim);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:940px){
+    .shell{grid-template-columns:1fr; gap:44px; max-width:520px;}
+    h1{font-size:38px;}
+    .bg .burst, .bg .rays{left:50%; opacity:0.5;}
+  }
+  @media (max-width:520px){
+    h1{font-size:31px;}
+    .card{padding:26px 22px 22px;}
+    body{padding:32px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="base"></div>
+  <svg class="rays" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="ray" x1="400" y1="400" x2="800" y2="400" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#9BD4FF" stop-opacity="0.75"/>
+        <stop offset="1" stop-color="#2E9BFF" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#ray)" stroke-width="1.15">
+      <path d="M400 400 L800 400"/><path d="M400 400 L790 330"/><path d="M400 400 L790 470"/>
+      <path d="M400 400 L760 250"/><path d="M400 400 L760 550"/><path d="M400 400 L700 170"/>
+      <path d="M400 400 L700 630"/><path d="M400 400 L620 110"/><path d="M400 400 L620 690"/>
+      <path d="M400 400 L520 60"/><path d="M400 400 L520 740"/><path d="M400 400 L400 40"/>
+      <path d="M400 400 L400 760"/><path d="M400 400 L270 70"/><path d="M400 400 L270 730"/>
+      <path d="M400 400 L150 160"/><path d="M400 400 L150 640"/><path d="M400 400 L40 300"/>
+      <path d="M400 400 L40 500"/><path d="M400 400 L0 400"/>
+    </g>
+  </svg>
+  <div class="burst"></div>
+  <div class="grid"></div>
+</div>
+
+<div class="shell">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="badge"><span class="dot"></span> Δίκτυο: Βέλτιστο</div>
+    <h1>Η πύλη δεδομένων<br>δικτύου της<br><span class="accent">OptikiTec.</span></h1>
+    <p class="lede">Επαγγελματική πύλη για διαχείριση υποδομών οπτικών ινών, τεχνικές αναλύσεις και πόρους έργων σε πραγματικό χρόνο.</p>
+    <div class="pills">
+      <span class="pill"><span class="dot green"></span> 99.9% uptime</span>
+      <span class="pill"><span class="dot cyan"></span> 24/7 monitoring</span>
+    </div>
+  </div>
+
+  <!-- ============ AUTH CARD ============ -->
+  <div class="card">
+    <h2>Πρόσβαση Portal</h2>
+    <div class="sub">Ασφαλής σύνδεση για εξουσιοδοτημένο προσωπικό.</div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="leader" type="button">Team Leader</button>
+      <button class="tab" data-tab="backoffice" type="button">Backoffice</button>
+      <button class="tab" data-tab="technician" type="button">Τεχνικός</button>
+    </div>
+
+    <!-- TEAM LEADER PANEL -->
+    <div class="panel" id="panel-leader">
+      <h3>Σύνδεση Team Leader</h3>
+      <p class="hint">Με τον εταιρικό σας λογαριασμό Google Workspace.</p>
+      <a class="btn btn-google" href="/api/auth/staff-login">
+        <svg class="gicon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.4c-2 1.5-4.6 2.5-7.7 2.5-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.8 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.6 5.4C41.9 35.8 44 30.3 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+        Σύνδεση με Google
+      </a>
+      <div class="note">Απαιτείται εταιρικός λογαριασμός Google Workspace.</div>
+    </div>
+
+    <!-- BACKOFFICE PANEL -->
+    <div class="panel" id="panel-backoffice" style="display:none;">
+      <h3>Σύνδεση Backoffice</h3>
+      <p class="hint">Με τον εταιρικό σας λογαριασμό Google Workspace.</p>
+      <a class="btn btn-google" href="/api/auth/staff-login">
+        <svg class="gicon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.4c-2 1.5-4.6 2.5-7.7 2.5-5.3 0-9.7-3.4-11.3-8.1l-6.6 5.1C9.8 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.6 5.4C41.9 35.8 44 30.3 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+        Σύνδεση με Google
+      </a>
+      <div class="note">Απαιτείται εταιρικός λογαριασμός Google Workspace.</div>
+    </div>
+
+    <!-- TECHNICIAN PANEL -->
+    <div class="panel" id="panel-technician" style="display:none;">
+      <h3>Σύνδεση Τεχνικού</h3>
+      <p class="hint">Βάλε τον κωδικό υπαλλήλου σου και το 4ψήφιο PIN σου.</p>
+      <div class="error" id="tech-error"></div>
+      <form id="tech-form">
+        <div class="field">
+          <label for="employeeId">Κωδικός Υπαλλήλου</label>
+          <input type="text" id="employeeId" name="employeeId" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="pin">PIN (4 ψηφία)</label>
+          <input type="password" id="pin" name="pin" inputmode="numeric" pattern="\d{4}" maxlength="4" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary" type="submit" id="tech-submit">Σύνδεση</button>
+      </form>
+      <div class="note">Δεν έχεις PIN; Επικοινώνησε με το backoffice.</div>
+    </div>
+
+    <div class="card-foot">
+      <span>v1.0.0-PRO</span>
+      <span class="links"><a href="#">Όροι</a><a href="#">Απόρρητο</a></span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = {
+    leader: document.getElementById('panel-leader'),
+    backoffice: document.getElementById('panel-backoffice'),
+    technician: document.getElementById('panel-technician'),
+  };
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      Object.entries(panels).forEach(([key, el]) => { el.style.display = key === tab.dataset.tab ? 'block' : 'none'; });
+    });
+  });
+
+  const form = document.getElementById('tech-form');
+  const errorBox = document.getElementById('tech-error');
+  const submitBtn = document.getElementById('tech-submit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Σύνδεση...';
+
+    const employeeId = document.getElementById('employeeId').value.trim();
+    const pin = document.getElementById('pin').value.trim();
+
+    try {
+      const res = await fetch('/api/auth/technician', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ employeeId, pin }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        errorBox.textContent = data.error || 'Κάτι πήγε στραβά.';
+        errorBox.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Σύνδεση';
+        return;
+      }
+      window.location.href = '/hub.html';
+    } catch (err) {
+      errorBox.textContent = 'Πρόβλημα σύνδεσης με τον server.';
+      errorBox.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Σύνδεση';
+    }
+  });
+</script>
+
+</body>
+</html>

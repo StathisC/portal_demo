@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Αξιολόγηση Υπαλλήλου – OptikiTec</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0369a1;--blue-lt:#e0f2fe;--blue-md:#bae6fd;--ink:#0f172a;--mid:#475569;--muted:#94a3b8;--rule:#e2e8f0;--bg:#f8fafc;--white:#ffffff;--red:#dc2626;--orange:#ea580c;--amber:#d97706;--green:#16a34a;--teal:#0284c7;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;font-size:10pt;color:var(--ink);background:#cbd5e1;display:flex;flex-direction:column;align-items:center;padding:32px 16px 90px;}
+.page{background:var(--white);width:210mm;box-shadow:0 20px 60px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.08);border-radius:4px;overflow:hidden;}
+
+/* HEADER */
+.header{display:flex;align-items:stretch;background:var(--white);border-bottom:3px solid var(--blue);}
+.header-logo{padding:14px 20px;display:flex;align-items:center;border-right:1px solid var(--rule);}
+.header-logo img{height:54px;width:auto;display:block;}
+.header-body{flex:1;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;}
+.header-body h1{font-family:'Outfit',sans-serif;font-size:18pt;font-weight:800;color:var(--ink);text-transform:uppercase;line-height:1.05;letter-spacing:-.2px;}
+.header-body p{margin-top:3px;font-size:8pt;color:var(--muted);}
+.header-date{padding:14px 18px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px;border-left:1px solid var(--rule);min-width:145px;}
+.header-date label{font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);}
+.header-date input[type=date]{border:1px solid var(--rule);border-radius:4px;font-family:'Inter',sans-serif;font-size:8.5pt;color:var(--ink);background:var(--bg);outline:none;padding:4px 7px;width:130px;}
+.header-date input[type=date]:focus{border-color:var(--blue);}
+
+/* TABS */
+.tab-bar{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:2px solid var(--rule);background:var(--bg);}
+.tab-btn{padding:11px 6px;font-family:'Outfit',sans-serif;font-size:8.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);background:transparent;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;white-space:nowrap;}
+.tab-btn .ticon{font-size:15px;}
+.tab-btn:hover{color:var(--ink);background:rgba(255,255,255,.7);}
+.tab-btn.active[data-tab=choma]{color:#92400e;border-bottom-color:#d97706;background:var(--white);}
+.tab-btn.active[data-tab=emf]{color:#065f46;border-bottom-color:#16a34a;background:var(--white);}
+.tab-btn.active[data-tab=kat]{color:#1e3a5f;border-bottom-color:var(--blue);background:var(--white);}
+.tab-btn.active[data-tab=auto]{color:#0e4f6b;border-bottom-color:#0284c7;background:var(--white);}
+.tab-btn.active[data-tab=kol]{color:#581c87;border-bottom-color:#7c3aed;background:var(--white);}
+.tab-btn.active[data-tab=bk]{color:#065f46;border-bottom-color:#0d9488;background:var(--white);}
+
+/* STAGE BANNER */
+.stage-banner{display:flex;align-items:center;gap:10px;padding:8px 16px;font-family:'Outfit',sans-serif;font-size:8pt;font-weight:600;letter-spacing:.3px;}
+.stage-banner[data-tab=auto]{background:#e0f2fe;color:#0e4f6b;border-bottom:1px solid var(--blue-md);}
+.stage-banner[data-tab=choma]{background:#fef3c7;color:#92400e;border-bottom:1px solid #fde68a;}
+.stage-banner[data-tab=emf]{background:#d1fae5;color:#065f46;border-bottom:1px solid #a7f3d0;}
+.stage-banner[data-tab=kat]{background:#dbeafe;color:#1e3a5f;border-bottom:1px solid var(--blue-md);}
+.stage-banner[data-tab=kol]{background:#ede9fe;color:#581c87;border-bottom:1px solid #c4b5fd;}
+.stage-banner[data-tab=bk]{background:#f0fdfa;color:#065f46;border-bottom:1px solid #99f6e4;}
+
+/* TAB PANELS */
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule);background:var(--bg);}
+.info-field{padding:10px 14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.info-field:nth-child(3n){border-right:none;}
+.info-field:nth-child(4),.info-field:nth-child(5){border-bottom:none;}
+.info-field label{display:block;font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:5px;}
+.info-input{width:100%;border:none;border-bottom:1.5px solid var(--rule);font-family:'Inter',sans-serif;font-size:9pt;font-weight:500;color:var(--ink);background:transparent;outline:none;padding:2px 0 4px;}
+.info-input::placeholder{color:#dde5ec;}
+.info-input:focus{border-bottom-color:var(--blue);}
+
+/* BODY */
+.body{padding:14px 16px;}
+
+/* SCALE */
+.scale-bar{display:flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:14px;background:var(--blue-lt);border-radius:4px;border:1px solid var(--blue-md);flex-wrap:wrap;}
+.scale-bar strong{font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--blue);margin-right:4px;}
+.scale-pill{display:inline-flex;align-items:center;gap:5px;background:var(--white);border:1px solid var(--blue-md);padding:2px 8px 2px 4px;border-radius:20px;font-size:7pt;color:var(--mid);}
+.scale-pill .num{width:16px;height:16px;border-radius:50%;background:var(--blue);color:var(--white);font-size:7.5pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* SECTIONS */
+.section{margin-bottom:12px;border:1px solid var(--rule);border-radius:4px;overflow:hidden;}
+.section-header{display:flex;align-items:center;gap:12px;padding:7px 14px;}
+.sh-auto{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
+.sh-choma{background:linear-gradient(135deg,#78350f,#b45309);}
+.sh-emf{background:linear-gradient(135deg,#064e3b,#065f46);}
+.sh-kat{background:linear-gradient(135deg,#0f172a,#1e3a5f);}
+.sh-kol{background:linear-gradient(135deg,#3b0764,#581c87);}
+.sh-bk{background:linear-gradient(135deg,#134e4a,#0f766e);}
+.section-icon{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.section-titles{flex:1;}
+.section-title{font-family:'Outfit',sans-serif;font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--white);line-height:1;}
+.section-sub{font-size:7pt;color:rgba(255,255,255,.6);margin-top:2px;}
+.section-score-badge{font-family:'Outfit',sans-serif;font-size:9pt;font-weight:700;color:rgba(255,255,255,.9);background:rgba(255,255,255,.1);padding:2px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);white-space:nowrap;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg);}
+thead th{font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--rule);text-align:center;}
+thead th:first-child{text-align:left;}
+tbody tr{border-bottom:1px solid var(--rule);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0f9ff;}
+tbody td{padding:6px 8px;vertical-align:middle;font-size:8.5pt;line-height:1.35;}
+
+/* RADIO */
+.score-cell{text-align:center;width:34px;}
+.score-cell input[type=radio]{display:none;}
+.score-cell label{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);font-size:8pt;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;}
+.score-cell label:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-lt);}
+.score-cell input[type=radio]:checked+label{border-color:var(--blue);background:var(--blue);color:var(--white);box-shadow:0 2px 6px rgba(3,105,161,.35);}
+input[value="1"]:checked+label{background:var(--red)!important;border-color:var(--red)!important;box-shadow:0 2px 6px rgba(220,38,38,.3)!important;}
+input[value="2"]:checked+label{background:var(--orange)!important;border-color:var(--orange)!important;box-shadow:0 2px 6px rgba(234,88,12,.3)!important;}
+input[value="3"]:checked+label{background:var(--amber)!important;border-color:var(--amber)!important;box-shadow:0 2px 6px rgba(217,119,6,.3)!important;}
+input[value="4"]:checked+label{background:var(--green)!important;border-color:var(--green)!important;box-shadow:0 2px 6px rgba(22,163,74,.3)!important;}
+input[value="5"]:checked+label{background:var(--teal)!important;border-color:var(--teal)!important;box-shadow:0 2px 6px rgba(2,132,199,.3)!important;}
+
+/* OBS */
+.obs-cell{width:100px;}
+.obs-cell input[type=text]{width:100%;border:none;border-bottom:1px solid var(--rule);font-size:7.5pt;font-family:'Inter',sans-serif;background:transparent;outline:none;color:var(--mid);padding:1px 2px;}
+.obs-cell input:focus{border-bottom-color:var(--blue);}
+
+/* BADGES */
+.badge{display:inline-block;font-size:6pt;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle;}
+.badge-req{background:#fef2f2;color:var(--red);border:1px solid #fecaca;}
+.badge-key{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;}
+
+/* SUMMARY */
+.summary-wrap{margin-bottom:12px;}
+.summary-title{font-size:7pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;}
+.summary-bar{display:grid;gap:8px;}
+.sum-card{background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:10px;text-align:center;position:relative;overflow:hidden;}
+.sum-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--rule);}
+.sum-card label{display:block;font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:6px;}
+.sum-card .val{font-family:'Outfit',sans-serif;font-size:22pt;font-weight:800;color:var(--blue);line-height:1;}
+.sum-card .max{font-size:7pt;color:var(--muted);margin-top:3px;}
+.sum-card.total{background:var(--ink);border-color:var(--ink);}
+.sum-card.total::before{background:var(--blue);}
+.sum-card.total label{color:#64748b;}
+.sum-card.total .val{color:#7dd3fc;}
+.sum-card.total .max{color:#475569;}
+
+/* PERF */
+.perf-wrap{margin-bottom:12px;}
+.perf-row{display:flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden;}
+.perf-opt{flex:1;}
+.perf-opt input[type=radio]{display:none;}
+.perf-opt label{display:block;text-align:center;padding:8px 4px;font-size:7.5pt;font-weight:600;cursor:pointer;border-right:1px solid var(--rule);transition:all .15s;line-height:1.3;color:var(--mid);}
+.perf-opt:last-child label{border-right:none;}
+.perf-opt input:checked+label{color:var(--white)!important;}
+.p1 input:checked+label{background:var(--red);}
+.p2 input:checked+label{background:var(--orange);}
+.p3 input:checked+label{background:var(--amber);}
+.p4 input:checked+label{background:var(--green);}
+.p5 input:checked+label{background:var(--teal);}
+
+/* COMMENTS */
+.comments-block{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.comment-box{border:1px solid var(--rule);border-radius:6px;overflow:hidden;}
+.comment-box label{display:block;padding:5px 10px;font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--blue);background:var(--bg);border-bottom:1px solid var(--rule);}
+.comment-box textarea{width:100%;height:54px;border:none;font-family:'Inter',sans-serif;font-size:8.5pt;padding:7px 10px;resize:none;color:var(--ink);background:var(--white);outline:none;display:block;}
+
+/* SIGS */
+.sigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.sig-box{border:1px solid var(--rule);border-radius:6px;padding:8px 12px;}
+.sig-area{height:34px;margin-bottom:6px;border-bottom:1px solid var(--rule);}
+.sig-box label{display:block;font-size:6.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);text-align:center;}
+
+/* FOOTER */
+.footer{padding:8px 16px;border-top:1px solid var(--rule);background:var(--bg);display:flex;justify-content:space-between;align-items:center;font-size:7pt;color:var(--muted);}
+.footer strong{color:var(--blue);font-weight:600;}
+
+/* FABs */
+.fab-wrap{display:flex;gap:10px;position:fixed;bottom:24px;right:24px;}
+.fab{border:none;border-radius:6px;padding:11px 20px;font-family:'Inter',sans-serif;font-size:9.5pt;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s;box-shadow:0 4px 14px rgba(0,0,0,.18);}
+.fab svg{width:15px;height:15px;fill:currentColor;}
+.fab-reset{background:#fee2e2;color:var(--red);}
+.fab-reset:hover{background:var(--red);color:var(--white);}
+.fab-print{background:var(--blue);color:var(--white);}
+.fab-print:hover{background:#025989;}
+
+@media print{
+  body{background:none;padding:0;}
+  .page{box-shadow:none;border-radius:0;width:100%;}
+  .fab-wrap,.tab-bar{display:none;}
+  .tab-panel{display:block!important;}
+  .tab-panel:not(.active){display:none!important;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABJAKsDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAYHBAUIAwIB/8QAORAAAQMEAQIEBAUCAwkAAAAAAQIDBAAFBhEhBxITIjFBFDJRYQgVUnGBI5EXQnIzQ2JzdJKh0eL/xAAYAQEAAwEAAAAAAAAAAAAAAAAAAQIDBP/EAC4RAAEEAAQEBQQCAwAAAAAAAAEAAgMRBBIhMUFRcfATIoGRoQUyYbFCosHR4f/aAAwDAQACEQMRAD8A7LpSlESlKURKVq8jyOw45D+Lv13hW5n2VIeCCr7JB5UfsN1DVdT5F28uD4VfshB+SW638FEV9w67on+E1oyF7xYGnPh77KpcArGpVe2K4dRmMkbn5pKxGz2BTCgYjL6lPBzfl24vSSfrrj7e9bqZ1AxSPJajpuaZDjrgQAwgrA3779NfsSftVvAfdNF9NVUysb9xrqpRSlKxWiUpSiJSlKIlKUoiUpSiJSlKIlKUoiUpUZzfJXrQqLaLNERcchuPcIUVSiEISPmedI+VpGxs+pJCRyeLNaXGgoJpZuWZRZMWhIlXiYGi6rsjsISVvSF/obbTtS1enoP31UGvV8zG7MCROnR+ntkc+QvBL91kJ+yOUtcH086h9q8IsRqzyZ94XdGJt4YSU3fKbikeDDHuzHR6J1v5E/UBRJPH1ZrVfb04blaEKskRY7lX28NB64yE/qaZV5WEa3or51ry12MjYwWfn/X/AAnjQWJe52je++ysCFabFZSq+RMcaU+SO/Iswmecn1Ch4h3o+xT2/tXw5mAvSimPfsoyQ75Zxe2KbZQfp8QrSVJ+5NbSJZ8KbuRfh2m4Z3ekHtM2av4pKFe39Rz+k2Pp2CpNIVmT0YuyJllxmElO968dxofQlWm/7Vdzxdn57J9qWdA8b6dge9qEQ7Fk8hzxLb0utMJaufichvJfK/uppoKG/tutmvHeoSGUmXl2HY00lXcE2+yBaUkehBeX6j66rBu+SYBHd8O+dVJtzfPC2IEguIUfp4bCVarDZvGAhfiWnpvmt5Ps63a3yhX8uqSP/FXOd24+LH9ijRl+0AetfoLNexqXeXPymV1wvEqXKQtKEQPh2QTrnYbHH7bBPOqtDG7auz2CDanJ0meuIwhoyZCu5x0pGu5R+pqM9M0Wu9Wpm/qwZeMzWnnGkMSY4Q6AOO/0B5G/UfXXHJm1ceIfrk5fgb+i3jBqylKUrnWiUpSiJSlKIlKUoiUpSiJSlKIlVZaFy5cW55MhwpuuS3VVrgvAbMSG04ttHb9OEOOnX+ZY+gq06rHGnxGxezrWB3WPIJEKZs6DQLrrQUf4cbV+yq3h0B771pZybLJg2623DIJIkpQ3jGIFLUeOeW3JYbDjj7g/zFtK0hO9+YrV661k3eTEl2g5JmMpUGxApMW3bO3dnyFwJ5ccUdENjeuByd1rLggQrZnNndCyoXNq4kAfPGfLRUofUAoeSf8ATW9RHbvXVWSuaPEZx+EwqEyrlIffLne9r9QSgJSfba9etaZq1Pe3ySd1XKCa4LDjpzjIGEN21qPg9lA00FsJenrR/wAv/ZMbHse9Q+grQ53YumOEWoZBnr06/vd3aybtJXLdeV+lDRIb/skAe+qtyuS/xduGV1nxy3Xh1bNmEVjat6CULeUHVD76A/7RW2BaZ5gy8o303SU5G3ut7afxMYfbHxGt+AvQIG9d0ZTSFa/0JSB/HdV8YJl9hzawovOPzBIjk9i0qHa40v3StPsef/WxXzKxbD1YmuzvWe1psgjkFvwkhtLfb82/bQ57t7991yr+G6bMgf4kM2qXITBbx+U+26hRSQ4jfhLBHorRURWngwYmJ74mlpbW5u7P7VczmOAcbtdl1+KISkqJ0ANmuM+kdk6p9U7VcUxuoVwiQoLqd/EznlKW4oHQ4O9aHv6b4B5qT9GckzbJGst6U3rI5TdwjR3DGufiKcdjKadSlxPeCFKSfY745+uqiX6b4ebzglu++g5qWz3Wm66HxPM8XyxclGOXqLclRgkvBknyBW+3ex76P9qjOOdRrnderl1wh7EZ0SJBSspuCie1XbrSiO3QSrflIJ9vrxz1+EbGrteMxmXGBkcm2x7U9Hdlxm+7tmpKl+RWlAa8p9QfmqcdN8jyGV+K2/2WVfLk/bGnpobhuSlqZQEny6QToa9uKvLgY4nyMabytvjpsobKXBpPEqyOkHVyB1Gu90t0SzyYCregLUp11KwvaiNDQ49KmWa3l/HsUuV7jWx+6Ow2FOpiMnS3de29HQ9ydHgHg1w7gWfysEjZb+VhxF0uiExoz49GB3qKl/6gOB9zv2q+oVqyTF/w13vIrhll1nXyfBblIf8AzBxwRUFSShLau7g6OyoepOvQc2xf05sUgI0aSABz2v0URzFzfypdZOrT8vAIOUXDFJVvclSXGBFW/wCoSPnSooBKT6eg5Brx/wAaIu9fkDu/+p/+Kx/wrTpuRdJxKyCW/dpAuLyQ7NWXlABKNDatn3Narpyww71fuDLrDS2g9K0hSAUjSla4o2DDh0oczVl8Tz2XNPJMHMyu0d+FceL3ZN8sMW6oYUwJCSfDKtlOlEev8VsqorPsqlTctesSLk9ZrRDcUwRGQdnt4JKUkd2yOBsDWvvv6wDLJtszGNamrxJu1pkuJaBfSQUlXAIBJ7dE+x0R/GsHfTn5PEHK61267WrDHsz5Dzq9N+m9K86VRVul5d1GyGWYV4ctrEcd6UJfW2lsb0kDt5J+/wC/2FWR04s2UWeNIbyG8fHIUf6KFLU6pGidnvVzo8cc/wAcisZ8IIW+Z4zcteK1hxXjHytOXmpbSlK411pUGy6CbNdJ16VFcmWC6spZvcdpJUtgpHamUhI5VpOkrA50lChvtIM5pVmOym1BFqspwekfAPtyIsy4pYUxDkqdHw18hr9WFODYS4dAg+yhsbClCtbasiTab7HuJEpfwzAt0+O63qR4AJU0VIH++aJWCBvxEKKkFWgDMrrhUcmQ5YpKLcJKu+RCcZD0KQr1KlM7HaokDzNlJ9zuopfsdvXhBNxsLkwNI7G3or/xBbG/RCyUPJT/AMBDqf3rpa9hFd998lkWuGytG3zIlwhNTYMlqTGeT3NutKCkqH1BFQnrN0vs/UqytR5jqoVxikmJNQnuKN+qVDjuSdDjY5HB9d19EayOwy3JNidvcFS1dy2n7e72OH6q2gJUfv2A/ep6zlGYLwqPcG7XFeui5Lra0/DPdgbQw44Fdo8wKlICB7bUP2qGtfC4SRu1U5g/yuCp09A+rLkEY+71Ajmwjy+B8bIKO36eF29v8b1Vl2vptZum3RjK7fbnFypcm0ylzJjiQlTygyvQA/ypGzoc+p55r3bznOxFakv4apCHXFllIYeUt0JcSjw+1Oy2oglQWvQISePevGbmGb3C1XBL2CjwG4bJdhyGHVqlB0NhaElPl4C17HJAGiAQa6ZMTiJaa4ir4ULVWsY3ULnvoRgedZLYLndcHy38keRIEaS0ZDrIdT2hQPcgHZGz6jj610F0E6PI6dCbcrpPbuV6nI8J1xsHw2297KUk8qJIBJIHoOPXeqxHIr5YhJZsfS9u1RVuIdMWPAdaW8C6U77tBPeGgDoj142BUkZz3J5GO3ecnFJcaVFaiuQ0PwZGpBX2pdT2hPdtKu7X27SdDZrTGYuecuaKDT0v1KiONraJ3ULwfojluD9SU3bG8qjt487KSuVGUpaXXWQrfhqSElKiNkb2Pf03W7w7pNebL11uufyLlb3IM1yStDCO/wAVIcPG9jXHvzUgeynM03aLC/KIjbDs0RfivhJK0rQWvFD2gB4afM22Qo/P3fpOta/nmfxre04vCFyn1Btaiyw6lI7gSUdp2ruGvX03wawdiMQ8kkiyKO2oVgxgUKxD8OcmPbMmt+SXG3SEXRpJhuxgorjPJUVJX5kjjnRAPIJFbvF+lmdwOkl96fXS+2iXFlNatzgU6THUVhSknafkOtjXoSfrxvWc/wA0lRnvBwyVFeEVx1syIb5QXA8e1o6A5LOlb/VsVtk5TlUm33j4awFiXCuDTEcyIr3hymFLDZdSBo8KC1e+kdpPrupkxWJdeYjcHhuKAQMYNl89B8HuHT7BfyC5S4sp/wCLcf74/d26UEgDzAHfFeOI4HdLPnsrIJEqGuO848pKEKUV+ckjYKQPf61jHPcwQ0ouYPMCm0d6yGXCFJ0tIUkAE7LnheX5gnvJHArGTneeiI1LOKB1ClNtrbTCkJWFKSVFXv5U60fv/aszJNb3WPNvsodHG7Lf8dlscw6fT5ORnIsYuSIE5Z7nEuEpT3a0SCAfX3BHOz9dVnYVjuXw7wq45DkKJKCnRjNeZCuOPVICdevlHP8AfekOf5n8Ew+cNfQ+poqciKiSCsKJXwFhPb5QlCj+oOAJ5B3+xuoOYr8snC5MZxBTtJjPqD2yjhCgnSfKvu2rgFCknnmpdJMWZDR4cLrqqCCMPzixx3NX0XheOmF4hXl24YheEwkO7/pqeW0psE8pCkg7T++vb19alXTjGbvjsV9N1vK5ynTtLKVKU22dkkgq5JO/oP5qMxeoWZupIkYVKiLQhPd3RX1hSw2VKSntTyFKHaFeg2O76VKen+RX2+rnovePP2dUUoDfehYS93FZ2kqA3pIRsexJB9qTTzujyvqvS/dI8NEx+Zv+a9lK6UpXCupKUpREpSlESlKURKUpREpSlESlKURKUpREpSlESlKURKUpREpSlEX/2Q==" alt="OptikiTec"></div>
+  <div class="header-body">
+    <h1>Αξιολόγηση Υπαλλήλου</h1>
+    <p>Κατασκευή Δικτύου Οπτικών Ινών FTTH &middot; OTE Φάση Β/Γ</p>
+  </div>
+  <div class="header-date">
+    <label for="field-date">Ημερομηνία</label>
+    <input type="date" id="field-date">
+  </div>
+</div>
+
+<!-- INFO GRID (shared) -->
+<div class="info-grid">
+  <div class="info-field">
+    <label for="field-name">Ονοματεπώνυμο Τεχνικού</label>
+    <input id="field-name" class="info-input" type="text" placeholder="Συμπληρώστε...">
+  </div>
+  <div class="info-field">
+    <label for="field-role">Θέση / Ρόλος</label>
+    <input id="field-role" class="info-input" type="text" placeholder="π.χ. Τεχνικός Α' Βαθμίδας">
+  </div>
+  <div class="info-field">
+    <label for="field-area">Περιοχή / Project</label>
+    <input id="field-area" class="info-input" type="text" placeholder="π.χ. Αττική – OTE Φάση Β">
+  </div>
+  <div class="info-field" style="grid-column:1/2">
+    <label for="field-eval">Αξιολογητής</label>
+    <input id="field-eval" class="info-input" type="text" placeholder="Ονοματεπώνυμο αξιολογητή">
+  </div>
+  <div class="info-field" style="grid-column:2/4;border-right:none">
+    <label for="field-period">Περίοδος Αξιολόγησης</label>
+    <input id="field-period" class="info-input" type="text" placeholder="π.χ. Απρίλιος 2025">
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="auto" onclick="switchTab('auto')"><span class="ticon">🔍</span>Αυτοψία</button>
+  <button class="tab-btn" data-tab="choma" onclick="switchTab('choma')"><span class="ticon">🚜</span>Χωματουργικό</button>
+  <button class="tab-btn" data-tab="emf" onclick="switchTab('emf')"><span class="ticon">💨</span>Εμφύσηση</button>
+  <button class="tab-btn" data-tab="kat" onclick="switchTab('kat')"><span class="ticon">🔧</span>Κατασκευή</button>
+  <button class="tab-btn" data-tab="kol" onclick="switchTab('kol')"><span class="ticon">🔬</span>Κόλληση</button>
+  <button class="tab-btn" data-tab="bk" onclick="switchTab('bk')"><span class="ticon">🖥️</span>Backoffice</button>
+</div>
+
+<!-- ═══ TAB: ΑΥΤΟΨΙΑ ═══ -->
+<div class="tab-panel active" id="panel-auto">
+  <div class="stage-banner" data-tab="auto">🔍 &nbsp;Στάδιο Αξιολόγησης: <strong>ΑΥΤΟΨΙΑ</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-auto">
+    <div class="section-icon">🔍</div>
+    <div class="section-titles">
+      <div class="section-title">Τεχνικές Δεξιότητες Αυτοψίας</div>
+      <div class="section-sub">Διαδρομή · Φρεάτια · Κτίριο · GIS</div>
+    </div>
+    <div class="section-score-badge" id="bs-auto_s1">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Αναγνώριση & καταγραφή βέλτιστης διαδρομής καλωδίωσης<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="auto_s1_q1" id="auto_s1_q1_1" value="1"><label for="auto_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q1" id="auto_s1_q1_2" value="2"><label for="auto_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q1" id="auto_s1_q1_3" value="3"><label for="auto_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q1" id="auto_s1_q1_4" value="4"><label for="auto_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q1" id="auto_s1_q1_5" value="5"><label for="auto_s1_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Εντοπισμός φρεατίων, στύλων & σημείων πρόσβασης<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="auto_s1_q2" id="auto_s1_q2_1" value="1"><label for="auto_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q2" id="auto_s1_q2_2" value="2"><label for="auto_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q2" id="auto_s1_q2_3" value="3"><label for="auto_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q2" id="auto_s1_q2_4" value="4"><label for="auto_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q2" id="auto_s1_q2_5" value="5"><label for="auto_s1_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιολόγηση τεχνικής δυνατότητας σύνδεσης κτιρίου<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="auto_s1_q3" id="auto_s1_q3_1" value="1"><label for="auto_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q3" id="auto_s1_q3_2" value="2"><label for="auto_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q3" id="auto_s1_q3_3" value="3"><label for="auto_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q3" id="auto_s1_q3_4" value="4"><label for="auto_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q3" id="auto_s1_q3_5" value="5"><label for="auto_s1_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Μέτρηση & καταγραφή αποστάσεων / εκτίμηση υλικών<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="auto_s1_q4" id="auto_s1_q4_1" value="1"><label for="auto_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q4" id="auto_s1_q4_2" value="2"><label for="auto_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q4" id="auto_s1_q4_3" value="3"><label for="auto_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q4" id="auto_s1_q4_4" value="4"><label for="auto_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q4" id="auto_s1_q4_5" value="5"><label for="auto_s1_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Αναγνώριση εμποδίων & πρόταση εναλλακτικών οδεύσεων</td><td class="score-cell"><input type="radio" name="auto_s1_q5" id="auto_s1_q5_1" value="1"><label for="auto_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q5" id="auto_s1_q5_2" value="2"><label for="auto_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q5" id="auto_s1_q5_3" value="3"><label for="auto_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q5" id="auto_s1_q5_4" value="4"><label for="auto_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q5" id="auto_s1_q5_5" value="5"><label for="auto_s1_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ανάγνωση & ερμηνεία σχεδίων GIS / δικτύου</td><td class="score-cell"><input type="radio" name="auto_s1_q6" id="auto_s1_q6_1" value="1"><label for="auto_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s1_q6" id="auto_s1_q6_2" value="2"><label for="auto_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s1_q6" id="auto_s1_q6_3" value="3"><label for="auto_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s1_q6" id="auto_s1_q6_4" value="4"><label for="auto_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s1_q6" id="auto_s1_q6_5" value="5"><label for="auto_s1_q6_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-auto">
+    <div class="section-icon">⚡</div>
+    <div class="section-titles">
+      <div class="section-title">Ταχύτητα & Παραγωγικότητα</div>
+      <div class="section-sub">Αριθμός αυτοψιών · Στόχοι · Χρόνος</div>
+    </div>
+    <div class="section-score-badge" id="bs-auto_s2">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Αριθμός αυτοψιών vs. ημερήσιος στόχος</td><td class="score-cell"><input type="radio" name="auto_s2_q1" id="auto_s2_q1_1" value="1"><label for="auto_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s2_q1" id="auto_s2_q1_2" value="2"><label for="auto_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s2_q1" id="auto_s2_q1_3" value="3"><label for="auto_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s2_q1" id="auto_s2_q1_4" value="4"><label for="auto_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s2_q1" id="auto_s2_q1_5" value="5"><label for="auto_s2_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ταχύτητα ολοκλήρωσης & έγκαιρη υποβολή στο σύστημα</td><td class="score-cell"><input type="radio" name="auto_s2_q2" id="auto_s2_q2_1" value="1"><label for="auto_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s2_q2" id="auto_s2_q2_2" value="2"><label for="auto_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s2_q2" id="auto_s2_q2_3" value="3"><label for="auto_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s2_q2" id="auto_s2_q2_4" value="4"><label for="auto_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s2_q2" id="auto_s2_q2_5" value="5"><label for="auto_s2_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Αντιμετώπιση δύσκολων / ειδικών περιπτώσεων</td><td class="score-cell"><input type="radio" name="auto_s2_q3" id="auto_s2_q3_1" value="1"><label for="auto_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s2_q3" id="auto_s2_q3_2" value="2"><label for="auto_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s2_q3" id="auto_s2_q3_3" value="3"><label for="auto_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s2_q3" id="auto_s2_q3_4" value="4"><label for="auto_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s2_q3" id="auto_s2_q3_5" value="5"><label for="auto_s2_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση εβδομαδιαίων στόχων SR</td><td class="score-cell"><input type="radio" name="auto_s2_q4" id="auto_s2_q4_1" value="1"><label for="auto_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s2_q4" id="auto_s2_q4_2" value="2"><label for="auto_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s2_q4" id="auto_s2_q4_3" value="3"><label for="auto_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s2_q4" id="auto_s2_q4_4" value="4"><label for="auto_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s2_q4" id="auto_s2_q4_5" value="5"><label for="auto_s2_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-auto">
+    <div class="section-icon">📸</div>
+    <div class="section-titles">
+      <div class="section-title">Φωτογραφική Τεκμηρίωση & Huskies/FSM</div>
+      <div class="section-sub">Καταγραφή · Φωτογραφίες · SR · Μετρήσεις</div>
+    </div>
+    <div class="section-score-badge" id="bs-auto_s3">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Πληρότητα & ακρίβεια καταγραφής αυτοψίας στο Huskies/FSM<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="auto_s3_q1" id="auto_s3_q1_1" value="1"><label for="auto_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s3_q1" id="auto_s3_q1_2" value="2"><label for="auto_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s3_q1" id="auto_s3_q1_3" value="3"><label for="auto_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s3_q1" id="auto_s3_q1_4" value="4"><label for="auto_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s3_q1" id="auto_s3_q1_5" value="5"><label for="auto_s3_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση κτιρίου, πρόσοψης & εισόδου<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="auto_s3_q2" id="auto_s3_q2_1" value="1"><label for="auto_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s3_q2" id="auto_s3_q2_2" value="2"><label for="auto_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s3_q2" id="auto_s3_q2_3" value="3"><label for="auto_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s3_q2" id="auto_s3_q2_4" value="4"><label for="auto_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s3_q2" id="auto_s3_q2_5" value="5"><label for="auto_s3_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση στύλων, φρεατίων & προτεινόμενης όδευσης<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="auto_s3_q3" id="auto_s3_q3_1" value="1"><label for="auto_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s3_q3" id="auto_s3_q3_2" value="2"><label for="auto_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s3_q3" id="auto_s3_q3_3" value="3"><label for="auto_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s3_q3" id="auto_s3_q3_4" value="4"><label for="auto_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s3_q3" id="auto_s3_q3_5" value="5"><label for="auto_s3_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Σωστή ετικέτωση & κωδικοποίηση SR</td><td class="score-cell"><input type="radio" name="auto_s3_q4" id="auto_s3_q4_1" value="1"><label for="auto_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s3_q4" id="auto_s3_q4_2" value="2"><label for="auto_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s3_q4" id="auto_s3_q4_3" value="3"><label for="auto_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s3_q4" id="auto_s3_q4_4" value="4"><label for="auto_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s3_q4" id="auto_s3_q4_5" value="5"><label for="auto_s3_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ακρίβεια μετρήσεων & εκτιμήσεων υλικών</td><td class="score-cell"><input type="radio" name="auto_s3_q5" id="auto_s3_q5_1" value="1"><label for="auto_s3_q5_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s3_q5" id="auto_s3_q5_2" value="2"><label for="auto_s3_q5_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s3_q5" id="auto_s3_q5_3" value="3"><label for="auto_s3_q5_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s3_q5" id="auto_s3_q5_4" value="4"><label for="auto_s3_q5_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s3_q5" id="auto_s3_q5_5" value="5"><label for="auto_s3_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-auto">
+    <div class="section-icon">🤝</div>
+    <div class="section-titles">
+      <div class="section-title">Επικοινωνία & Συμπεριφορά</div>
+      <div class="section-sub">Ιδιοκτήτες · Επόπτης · Ομαδικότητα</div>
+    </div>
+    <div class="section-score-badge" id="bs-auto_s4">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Επικοινωνία & διαχείριση ιδιοκτητών / διαχειριστών κτιρίων</td><td class="score-cell"><input type="radio" name="auto_s4_q1" id="auto_s4_q1_1" value="1"><label for="auto_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s4_q1" id="auto_s4_q1_2" value="2"><label for="auto_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s4_q1" id="auto_s4_q1_3" value="3"><label for="auto_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s4_q1" id="auto_s4_q1_4" value="4"><label for="auto_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s4_q1" id="auto_s4_q1_5" value="5"><label for="auto_s4_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοπιστία & συνέπεια – ωράρια, δεσμεύσεις</td><td class="score-cell"><input type="radio" name="auto_s4_q2" id="auto_s4_q2_1" value="1"><label for="auto_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s4_q2" id="auto_s4_q2_2" value="2"><label for="auto_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s4_q2" id="auto_s4_q2_3" value="3"><label for="auto_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s4_q2" id="auto_s4_q2_4" value="4"><label for="auto_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s4_q2" id="auto_s4_q2_5" value="5"><label for="auto_s4_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Επικοινωνία με επόπτη & έγκαιρη ενημέρωση</td><td class="score-cell"><input type="radio" name="auto_s4_q3" id="auto_s4_q3_1" value="1"><label for="auto_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s4_q3" id="auto_s4_q3_2" value="2"><label for="auto_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s4_q3" id="auto_s4_q3_3" value="3"><label for="auto_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s4_q3" id="auto_s4_q3_4" value="4"><label for="auto_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s4_q3" id="auto_s4_q3_5" value="5"><label for="auto_s4_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία & στήριξη συναδέλφων</td><td class="score-cell"><input type="radio" name="auto_s4_q4" id="auto_s4_q4_1" value="1"><label for="auto_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s4_q4" id="auto_s4_q4_2" value="2"><label for="auto_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s4_q4" id="auto_s4_q4_3" value="3"><label for="auto_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s4_q4" id="auto_s4_q4_4" value="4"><label for="auto_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s4_q4" id="auto_s4_q4_5" value="5"><label for="auto_s4_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία & διάθεση μάθησης / βελτίωσης</td><td class="score-cell"><input type="radio" name="auto_s4_q5" id="auto_s4_q5_1" value="1"><label for="auto_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="auto_s4_q5" id="auto_s4_q5_2" value="2"><label for="auto_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="auto_s4_q5" id="auto_s4_q5_3" value="3"><label for="auto_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="auto_s4_q5" id="auto_s4_q5_4" value="4"><label for="auto_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="auto_s4_q5" id="auto_s4_q5_5" value="5"><label for="auto_s4_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(4, 1fr) 1.4fr;"><div class="sum-card"><label>Τεχνικές Δεξ.</label><div class="val" id="s-auto-auto_s1">—</div><div class="max">/ 30</div></div>
+      <div class="sum-card"><label>Παραγωγικότητα</label><div class="val" id="s-auto-auto_s2">—</div><div class="max">/ 20</div></div>
+      <div class="sum-card"><label>Τεκμηρίωση</label><div class="val" id="s-auto-auto_s3">—</div><div class="max">/ 25</div></div>
+      <div class="sum-card"><label>Επικοινωνία</label><div class="val" id="s-auto-auto_s4">—</div><div class="max">/ 25</div></div>
+      <div class="sum-card total"><label>Συνολικό Σκορ</label><div class="val" id="s-auto-total">—</div><div class="max">/ 100</div></div></div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+<!-- ═══ TAB: ΧΩΜΑΤΟΥΡΓΙΚΟ ═══ -->
+<div class="tab-panel" id="panel-choma">
+  <div class="stage-banner" data-tab="choma">🚜 &nbsp;Στάδιο Αξιολόγησης: <strong>ΧΩΜΑΤΟΥΡΓΙΚΟ</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-choma">
+    <div class="section-icon">🚜</div>
+    <div class="section-titles">
+      <div class="section-title">Τεχνικές Δεξιότητες Εκσκαφής</div>
+      <div class="section-sub">Εκσκαφή · Σωλήνες · Μηχανήματα · Σχέδια</div>
+    </div>
+    <div class="section-score-badge" id="bs-choma_s1">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Εκσκαφή τάφρου & ορθή βάθυνση κατά προδιαγραφές<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="choma_s1_q1" id="choma_s1_q1_1" value="1"><label for="choma_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q1" id="choma_s1_q1_2" value="2"><label for="choma_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q1" id="choma_s1_q1_3" value="3"><label for="choma_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q1" id="choma_s1_q1_4" value="4"><label for="choma_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q1" id="choma_s1_q1_5" value="5"><label for="choma_s1_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τοποθέτηση microducts/σωλήνων & σωστές επισυνδέσεις<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="choma_s1_q2" id="choma_s1_q2_1" value="1"><label for="choma_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q2" id="choma_s1_q2_2" value="2"><label for="choma_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q2" id="choma_s1_q2_3" value="3"><label for="choma_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q2" id="choma_s1_q2_4" value="4"><label for="choma_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q2" id="choma_s1_q2_5" value="5"><label for="choma_s1_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Χρήση μηχανημάτων (mini-εκσκαφέας, compactor, κ.λπ.)</td>
+<td class="score-cell"><input type="radio" name="choma_s1_q3" id="choma_s1_q3_1" value="1"><label for="choma_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q3" id="choma_s1_q3_2" value="2"><label for="choma_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q3" id="choma_s1_q3_3" value="3"><label for="choma_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q3" id="choma_s1_q3_4" value="4"><label for="choma_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q3" id="choma_s1_q3_5" value="5"><label for="choma_s1_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ανάγνωση σχεδίων δικτύου & GIS routing</td>
+<td class="score-cell"><input type="radio" name="choma_s1_q4" id="choma_s1_q4_1" value="1"><label for="choma_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q4" id="choma_s1_q4_2" value="2"><label for="choma_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q4" id="choma_s1_q4_3" value="3"><label for="choma_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q4" id="choma_s1_q4_4" value="4"><label for="choma_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q4" id="choma_s1_q4_5" value="5"><label for="choma_s1_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αποκατάσταση οδοστρώματος & ασφαλτικό patching<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="choma_s1_q5" id="choma_s1_q5_1" value="1"><label for="choma_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q5" id="choma_s1_q5_2" value="2"><label for="choma_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q5" id="choma_s1_q5_3" value="3"><label for="choma_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q5" id="choma_s1_q5_4" value="4"><label for="choma_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q5" id="choma_s1_q5_5" value="5"><label for="choma_s1_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τακτοποίηση χώρου & αφαίρεση αχρήστων υλικών</td>
+<td class="score-cell"><input type="radio" name="choma_s1_q6" id="choma_s1_q6_1" value="1"><label for="choma_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s1_q6" id="choma_s1_q6_2" value="2"><label for="choma_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s1_q6" id="choma_s1_q6_3" value="3"><label for="choma_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s1_q6" id="choma_s1_q6_4" value="4"><label for="choma_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s1_q6" id="choma_s1_q6_5" value="5"><label for="choma_s1_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-choma">
+    <div class="section-icon">⚠️</div>
+    <div class="section-titles">
+      <div class="section-title">Σήμανση Εργοταξίου & Ασφάλεια</div>
+      <div class="section-sub">ΜΑΠ · Περίφραξη · Εργασία σε οδικό δίκτυο</div>
+    </div>
+    <div class="section-score-badge" id="bs-choma_s2">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Σωστή σήμανση εργοταξίου & περίφραξη<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="choma_s2_q1" id="choma_s2_q1_1" value="1"><label for="choma_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s2_q1" id="choma_s2_q1_2" value="2"><label for="choma_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s2_q1" id="choma_s2_q1_3" value="3"><label for="choma_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s2_q1" id="choma_s2_q1_4" value="4"><label for="choma_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s2_q1" id="choma_s2_q1_5" value="5"><label for="choma_s2_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τήρηση ΜΑΠ (γάντια, κράνος, γιλέκο, μπότες)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="choma_s2_q2" id="choma_s2_q2_1" value="1"><label for="choma_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s2_q2" id="choma_s2_q2_2" value="2"><label for="choma_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s2_q2" id="choma_s2_q2_3" value="3"><label for="choma_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s2_q2" id="choma_s2_q2_4" value="4"><label for="choma_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s2_q2" id="choma_s2_q2_5" value="5"><label for="choma_s2_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ασφαλής εργασία σε οδικό δίκτυο / πλησίον οχημάτων<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="choma_s2_q3" id="choma_s2_q3_1" value="1"><label for="choma_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s2_q3" id="choma_s2_q3_2" value="2"><label for="choma_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s2_q3" id="choma_s2_q3_3" value="3"><label for="choma_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s2_q3" id="choma_s2_q3_4" value="4"><label for="choma_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s2_q3" id="choma_s2_q3_5" value="5"><label for="choma_s2_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Διαχείριση απορριμμάτων & επικίνδυνων υλικών</td>
+<td class="score-cell"><input type="radio" name="choma_s2_q4" id="choma_s2_q4_1" value="1"><label for="choma_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s2_q4" id="choma_s2_q4_2" value="2"><label for="choma_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s2_q4" id="choma_s2_q4_3" value="3"><label for="choma_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s2_q4" id="choma_s2_q4_4" value="4"><label for="choma_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s2_q4" id="choma_s2_q4_5" value="5"><label for="choma_s2_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-choma">
+    <div class="section-icon">⚡</div>
+    <div class="section-titles">
+      <div class="section-title">Ταχύτητα & Παραγωγικότητα</div>
+      <div class="section-sub">Στόχοι μήκους · Χρόνος · SR</div>
+    </div>
+    <div class="section-score-badge" id="bs-choma_s3">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Μήκος εκσκαφής vs. ημερήσιος στόχος</td>
+<td class="score-cell"><input type="radio" name="choma_s3_q1" id="choma_s3_q1_1" value="1"><label for="choma_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s3_q1" id="choma_s3_q1_2" value="2"><label for="choma_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s3_q1" id="choma_s3_q1_3" value="3"><label for="choma_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s3_q1" id="choma_s3_q1_4" value="4"><label for="choma_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s3_q1" id="choma_s3_q1_5" value="5"><label for="choma_s3_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοποίηση χρόνου στο πεδίο – μετακινήσεις & προετοιμασία</td>
+<td class="score-cell"><input type="radio" name="choma_s3_q2" id="choma_s3_q2_1" value="1"><label for="choma_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s3_q2" id="choma_s3_q2_2" value="2"><label for="choma_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s3_q2" id="choma_s3_q2_3" value="3"><label for="choma_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s3_q2" id="choma_s3_q2_4" value="4"><label for="choma_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s3_q2" id="choma_s3_q2_5" value="5"><label for="choma_s3_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αντιμετώπιση απρόβλεπτων (βράχοι, αγωγοί, κ.λπ.)</td>
+<td class="score-cell"><input type="radio" name="choma_s3_q3" id="choma_s3_q3_1" value="1"><label for="choma_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s3_q3" id="choma_s3_q3_2" value="2"><label for="choma_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s3_q3" id="choma_s3_q3_3" value="3"><label for="choma_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s3_q3" id="choma_s3_q3_4" value="4"><label for="choma_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s3_q3" id="choma_s3_q3_5" value="5"><label for="choma_s3_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση εβδομαδιαίων στόχων SR</td>
+<td class="score-cell"><input type="radio" name="choma_s3_q4" id="choma_s3_q4_1" value="1"><label for="choma_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s3_q4" id="choma_s3_q4_2" value="2"><label for="choma_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s3_q4" id="choma_s3_q4_3" value="3"><label for="choma_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s3_q4" id="choma_s3_q4_4" value="4"><label for="choma_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s3_q4" id="choma_s3_q4_5" value="5"><label for="choma_s3_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-choma">
+    <div class="section-icon">📋</div>
+    <div class="section-titles">
+      <div class="section-title">Τεκμηρίωση & Συμπεριφορά</div>
+      <div class="section-sub">Huskies/FSM · Φωτογραφίες · Επικοινωνία</div>
+    </div>
+    <div class="section-score-badge" id="bs-choma_s4">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Καταγραφή αυτοψίας στο Huskies/FSM – πληρότητα & ακρίβεια<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="choma_s4_q1" id="choma_s4_q1_1" value="1"><label for="choma_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q1" id="choma_s4_q1_2" value="2"><label for="choma_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q1" id="choma_s4_q1_3" value="3"><label for="choma_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q1" id="choma_s4_q1_4" value="4"><label for="choma_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q1" id="choma_s4_q1_5" value="5"><label for="choma_s4_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση (πριν/κατά/μετά εκσκαφή)</td>
+<td class="score-cell"><input type="radio" name="choma_s4_q2" id="choma_s4_q2_1" value="1"><label for="choma_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q2" id="choma_s4_q2_2" value="2"><label for="choma_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q2" id="choma_s4_q2_3" value="3"><label for="choma_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q2" id="choma_s4_q2_4" value="4"><label for="choma_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q2" id="choma_s4_q2_5" value="5"><label for="choma_s4_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Επικοινωνία με επόπτη & ομάδα – έγκαιρη ενημέρωση</td>
+<td class="score-cell"><input type="radio" name="choma_s4_q3" id="choma_s4_q3_1" value="1"><label for="choma_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q3" id="choma_s4_q3_2" value="2"><label for="choma_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q3" id="choma_s4_q3_3" value="3"><label for="choma_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q3" id="choma_s4_q3_4" value="4"><label for="choma_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q3" id="choma_s4_q3_5" value="5"><label for="choma_s4_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοπιστία & συνέπεια – ωράρια, δεσμεύσεις</td>
+<td class="score-cell"><input type="radio" name="choma_s4_q4" id="choma_s4_q4_1" value="1"><label for="choma_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q4" id="choma_s4_q4_2" value="2"><label for="choma_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q4" id="choma_s4_q4_3" value="3"><label for="choma_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q4" id="choma_s4_q4_4" value="4"><label for="choma_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q4" id="choma_s4_q4_5" value="5"><label for="choma_s4_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία & στήριξη συναδέλφων</td>
+<td class="score-cell"><input type="radio" name="choma_s4_q5" id="choma_s4_q5_1" value="1"><label for="choma_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q5" id="choma_s4_q5_2" value="2"><label for="choma_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q5" id="choma_s4_q5_3" value="3"><label for="choma_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q5" id="choma_s4_q5_4" value="4"><label for="choma_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q5" id="choma_s4_q5_5" value="5"><label for="choma_s4_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία & διάθεση μάθησης</td>
+<td class="score-cell"><input type="radio" name="choma_s4_q6" id="choma_s4_q6_1" value="1"><label for="choma_s4_q6_1">1</label></td><td class="score-cell"><input type="radio" name="choma_s4_q6" id="choma_s4_q6_2" value="2"><label for="choma_s4_q6_2">2</label></td><td class="score-cell"><input type="radio" name="choma_s4_q6" id="choma_s4_q6_3" value="3"><label for="choma_s4_q6_3">3</label></td><td class="score-cell"><input type="radio" name="choma_s4_q6" id="choma_s4_q6_4" value="4"><label for="choma_s4_q6_4">4</label></td><td class="score-cell"><input type="radio" name="choma_s4_q6" id="choma_s4_q6_5" value="5"><label for="choma_s4_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(4, 1fr) 1.4fr;"><div class="sum-card">
+  <label>Τεχνικές Δεξ.</label>
+  <div class="val" id="s-choma-s1">—</div>
+  <div class="max">/ 30</div>
+</div><div class="sum-card">
+  <label>Σήμανση & Ασφ.</label>
+  <div class="val" id="s-choma-s2">—</div>
+  <div class="max">/ 20</div>
+</div><div class="sum-card">
+  <label>Παραγωγικότητα</label>
+  <div class="val" id="s-choma-s3">—</div>
+  <div class="max">/ 20</div>
+</div><div class="sum-card">
+  <label>Τεκμ. & Συμπ.</label>
+  <div class="val" id="s-choma-s4">—</div>
+  <div class="max">/ 30</div>
+</div><div class="sum-card total">
+  <label>Συνολικό Σκορ</label>
+  <div class="val" id="s-choma-total">—</div>
+  <div class="max">/ 100</div>
+</div></div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+<!-- ═══ TAB: ΕΜΦΥΣΗΣΗ ═══ -->
+<div class="tab-panel" id="panel-emf">
+  <div class="stage-banner" data-tab="emf">💨 &nbsp;Στάδιο Αξιολόγησης: <strong>ΕΜΦΥΣΗΣΗ</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-emf">
+    <div class="section-icon">💨</div>
+    <div class="section-titles">
+      <div class="section-title">Τεχνικές Δεξιότητες Εμφύσησης</div>
+      <div class="section-sub">Μηχανή · Πίεση · Εμπόδια · Εξοπλισμός</div>
+    </div>
+    <div class="section-score-badge" id="bs-emf_s1">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ρύθμιση & λειτουργία μηχανής εμφύσησης<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="emf_s1_q1" id="emf_s1_q1_1" value="1"><label for="emf_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q1" id="emf_s1_q1_2" value="2"><label for="emf_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q1" id="emf_s1_q1_3" value="3"><label for="emf_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q1" id="emf_s1_q1_4" value="4"><label for="emf_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q1" id="emf_s1_q1_5" value="5"><label for="emf_s1_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τεχνική εμφύσησης – έλεγχος ταχύτητας & πίεσης αέρα<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="emf_s1_q2" id="emf_s1_q2_1" value="1"><label for="emf_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q2" id="emf_s1_q2_2" value="2"><label for="emf_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q2" id="emf_s1_q2_3" value="3"><label for="emf_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q2" id="emf_s1_q2_4" value="4"><label for="emf_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q2" id="emf_s1_q2_5" value="5"><label for="emf_s1_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εντοπισμός & επίλυση εμποδίων / φραγών σωλήνα<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="emf_s1_q3" id="emf_s1_q3_1" value="1"><label for="emf_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q3" id="emf_s1_q3_2" value="2"><label for="emf_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q3" id="emf_s1_q3_3" value="3"><label for="emf_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q3" id="emf_s1_q3_4" value="4"><label for="emf_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q3" id="emf_s1_q3_5" value="5"><label for="emf_s1_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Σωστή είσοδος & έξοδος καλωδίου σε φρεάτια</td>
+<td class="score-cell"><input type="radio" name="emf_s1_q4" id="emf_s1_q4_1" value="1"><label for="emf_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q4" id="emf_s1_q4_2" value="2"><label for="emf_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q4" id="emf_s1_q4_3" value="3"><label for="emf_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q4" id="emf_s1_q4_4" value="4"><label for="emf_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q4" id="emf_s1_q4_5" value="5"><label for="emf_s1_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Χρήση & φροντίδα εξοπλισμού εμφύσησης</td>
+<td class="score-cell"><input type="radio" name="emf_s1_q5" id="emf_s1_q5_1" value="1"><label for="emf_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q5" id="emf_s1_q5_2" value="2"><label for="emf_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q5" id="emf_s1_q5_3" value="3"><label for="emf_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q5" id="emf_s1_q5_4" value="4"><label for="emf_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q5" id="emf_s1_q5_5" value="5"><label for="emf_s1_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ανάγνωση σχεδίων & GIS routing διαδρομής</td>
+<td class="score-cell"><input type="radio" name="emf_s1_q6" id="emf_s1_q6_1" value="1"><label for="emf_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s1_q6" id="emf_s1_q6_2" value="2"><label for="emf_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s1_q6" id="emf_s1_q6_3" value="3"><label for="emf_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s1_q6" id="emf_s1_q6_4" value="4"><label for="emf_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s1_q6" id="emf_s1_q6_5" value="5"><label for="emf_s1_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-emf">
+    <div class="section-icon">⚡</div>
+    <div class="section-titles">
+      <div class="section-title">Ταχύτητα & Παραγωγικότητα</div>
+      <div class="section-sub">Μήκος · Στόχοι · Διακοπές</div>
+    </div>
+    <div class="section-score-badge" id="bs-emf_s2">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Μήκος εμφύσησης vs. ημερήσιος στόχος</td>
+<td class="score-cell"><input type="radio" name="emf_s2_q1" id="emf_s2_q1_1" value="1"><label for="emf_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s2_q1" id="emf_s2_q1_2" value="2"><label for="emf_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s2_q1" id="emf_s2_q1_3" value="3"><label for="emf_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s2_q1" id="emf_s2_q1_4" value="4"><label for="emf_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s2_q1" id="emf_s2_q1_5" value="5"><label for="emf_s2_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ελαχιστοποίηση διακοπών & επαναλήψεων</td>
+<td class="score-cell"><input type="radio" name="emf_s2_q2" id="emf_s2_q2_1" value="1"><label for="emf_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s2_q2" id="emf_s2_q2_2" value="2"><label for="emf_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s2_q2" id="emf_s2_q2_3" value="3"><label for="emf_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s2_q2" id="emf_s2_q2_4" value="4"><label for="emf_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s2_q2" id="emf_s2_q2_5" value="5"><label for="emf_s2_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αντιμετώπιση απρόβλεπτων καταστάσεων</td>
+<td class="score-cell"><input type="radio" name="emf_s2_q3" id="emf_s2_q3_1" value="1"><label for="emf_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s2_q3" id="emf_s2_q3_2" value="2"><label for="emf_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s2_q3" id="emf_s2_q3_3" value="3"><label for="emf_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s2_q3" id="emf_s2_q3_4" value="4"><label for="emf_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s2_q3" id="emf_s2_q3_5" value="5"><label for="emf_s2_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση εβδομαδιαίων στόχων SR</td>
+<td class="score-cell"><input type="radio" name="emf_s2_q4" id="emf_s2_q4_1" value="1"><label for="emf_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s2_q4" id="emf_s2_q4_2" value="2"><label for="emf_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s2_q4" id="emf_s2_q4_3" value="3"><label for="emf_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s2_q4" id="emf_s2_q4_4" value="4"><label for="emf_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s2_q4" id="emf_s2_q4_5" value="5"><label for="emf_s2_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-emf">
+    <div class="section-icon">✅</div>
+    <div class="section-titles">
+      <div class="section-title">Ποιότητα & Τεκμηρίωση</div>
+      <div class="section-sub">Ακεραιότητα · Ετικέτωση · Huskies/FSM · Φωτογραφίες</div>
+    </div>
+    <div class="section-score-badge" id="bs-emf_s3">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ακεραιότητα καλωδίου μετά εμφύσηση (χωρίς damage)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="emf_s3_q1" id="emf_s3_q1_1" value="1"><label for="emf_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s3_q1" id="emf_s3_q1_2" value="2"><label for="emf_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s3_q1" id="emf_s3_q1_3" value="3"><label for="emf_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s3_q1" id="emf_s3_q1_4" value="4"><label for="emf_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s3_q1" id="emf_s3_q1_5" value="5"><label for="emf_s3_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Σωστή ετικέτωση καλωδίων & φρεατίων<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="emf_s3_q2" id="emf_s3_q2_1" value="1"><label for="emf_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s3_q2" id="emf_s3_q2_2" value="2"><label for="emf_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s3_q2" id="emf_s3_q2_3" value="3"><label for="emf_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s3_q2" id="emf_s3_q2_4" value="4"><label for="emf_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s3_q2" id="emf_s3_q2_5" value="5"><label for="emf_s3_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Καταγραφή αυτοψίας στο Huskies/FSM – πληρότητα & ακρίβεια<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="emf_s3_q3" id="emf_s3_q3_1" value="1"><label for="emf_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s3_q3" id="emf_s3_q3_2" value="2"><label for="emf_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s3_q3" id="emf_s3_q3_3" value="3"><label for="emf_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s3_q3" id="emf_s3_q3_4" value="4"><label for="emf_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s3_q3" id="emf_s3_q3_5" value="5"><label for="emf_s3_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση (είσοδοι/έξοδοι, φρεάτια)</td>
+<td class="score-cell"><input type="radio" name="emf_s3_q4" id="emf_s3_q4_1" value="1"><label for="emf_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s3_q4" id="emf_s3_q4_2" value="2"><label for="emf_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s3_q4" id="emf_s3_q4_3" value="3"><label for="emf_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s3_q4" id="emf_s3_q4_4" value="4"><label for="emf_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s3_q4" id="emf_s3_q4_5" value="5"><label for="emf_s3_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τακτοποίηση χώρου & κλείσιμο φρεατίων</td>
+<td class="score-cell"><input type="radio" name="emf_s3_q5" id="emf_s3_q5_1" value="1"><label for="emf_s3_q5_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s3_q5" id="emf_s3_q5_2" value="2"><label for="emf_s3_q5_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s3_q5" id="emf_s3_q5_3" value="3"><label for="emf_s3_q5_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s3_q5" id="emf_s3_q5_4" value="4"><label for="emf_s3_q5_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s3_q5" id="emf_s3_q5_5" value="5"><label for="emf_s3_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-emf">
+    <div class="section-icon">🤝</div>
+    <div class="section-titles">
+      <div class="section-title">Συμπεριφορά & Ασφάλεια</div>
+      <div class="section-sub">ΜΑΠ · Επικοινωνία · Ομαδικότητα</div>
+    </div>
+    <div class="section-score-badge" id="bs-emf_s4">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Τήρηση ΜΑΠ & κανόνων ασφαλείας<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="emf_s4_q1" id="emf_s4_q1_1" value="1"><label for="emf_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s4_q1" id="emf_s4_q1_2" value="2"><label for="emf_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s4_q1" id="emf_s4_q1_3" value="3"><label for="emf_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s4_q1" id="emf_s4_q1_4" value="4"><label for="emf_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s4_q1" id="emf_s4_q1_5" value="5"><label for="emf_s4_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Επικοινωνία με επόπτη & ομάδα</td>
+<td class="score-cell"><input type="radio" name="emf_s4_q2" id="emf_s4_q2_1" value="1"><label for="emf_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s4_q2" id="emf_s4_q2_2" value="2"><label for="emf_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s4_q2" id="emf_s4_q2_3" value="3"><label for="emf_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s4_q2" id="emf_s4_q2_4" value="4"><label for="emf_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s4_q2" id="emf_s4_q2_5" value="5"><label for="emf_s4_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοπιστία & συνέπεια – ωράρια, δεσμεύσεις</td>
+<td class="score-cell"><input type="radio" name="emf_s4_q3" id="emf_s4_q3_1" value="1"><label for="emf_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s4_q3" id="emf_s4_q3_2" value="2"><label for="emf_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s4_q3" id="emf_s4_q3_3" value="3"><label for="emf_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s4_q3" id="emf_s4_q3_4" value="4"><label for="emf_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s4_q3" id="emf_s4_q3_5" value="5"><label for="emf_s4_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία & στήριξη συναδέλφων</td>
+<td class="score-cell"><input type="radio" name="emf_s4_q4" id="emf_s4_q4_1" value="1"><label for="emf_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s4_q4" id="emf_s4_q4_2" value="2"><label for="emf_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s4_q4" id="emf_s4_q4_3" value="3"><label for="emf_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s4_q4" id="emf_s4_q4_4" value="4"><label for="emf_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s4_q4" id="emf_s4_q4_5" value="5"><label for="emf_s4_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία & διάθεση μάθησης</td>
+<td class="score-cell"><input type="radio" name="emf_s4_q5" id="emf_s4_q5_1" value="1"><label for="emf_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="emf_s4_q5" id="emf_s4_q5_2" value="2"><label for="emf_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="emf_s4_q5" id="emf_s4_q5_3" value="3"><label for="emf_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="emf_s4_q5" id="emf_s4_q5_4" value="4"><label for="emf_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="emf_s4_q5" id="emf_s4_q5_5" value="5"><label for="emf_s4_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(4, 1fr) 1.4fr;"><div class="sum-card">
+  <label>Τεχνικές Δεξ.</label>
+  <div class="val" id="s-emf-s1">—</div>
+  <div class="max">/ 30</div>
+</div><div class="sum-card">
+  <label>Παραγωγικότητα</label>
+  <div class="val" id="s-emf-s2">—</div>
+  <div class="max">/ 20</div>
+</div><div class="sum-card">
+  <label>Ποιότητα & Τεκμ.</label>
+  <div class="val" id="s-emf-s3">—</div>
+  <div class="max">/ 25</div>
+</div><div class="sum-card">
+  <label>Συμπ. & Ασφ.</label>
+  <div class="val" id="s-emf-s4">—</div>
+  <div class="max">/ 25</div>
+</div><div class="sum-card total">
+  <label>Συνολικό Σκορ</label>
+  <div class="val" id="s-emf-total">—</div>
+  <div class="max">/ 100</div>
+</div></div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+<!-- ═══ TAB: ΚΑΤΑΣΚΕΥΗ ═══ -->
+<div class="tab-panel" id="panel-kat">
+  <div class="stage-banner" data-tab="kat">🔧 &nbsp;Στάδιο Αξιολόγησης: <strong>ΚΑΤΑΣΚΕΥΗ</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-kat">
+    <div class="section-icon">🔧</div>
+    <div class="section-titles">
+      <div class="section-title">Τεχνικές Δεξιότητες</div>
+      <div class="section-sub">OTDR · Σύνδεση · Εμφύσηση · Εξοπλισμός</div>
+    </div>
+    <div class="section-score-badge" id="bs-kat_s1">— / 35</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Τοποθέτηση αεροκαλωδίου σε στύλους &amp; αγκυρώσεις<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kat_s1_q1" id="kat_s1_q1_1" value="1"><label for="kat_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q1" id="kat_s1_q1_2" value="2"><label for="kat_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q1" id="kat_s1_q1_3" value="3"><label for="kat_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q1" id="kat_s1_q1_4" value="4"><label for="kat_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q1" id="kat_s1_q1_5" value="5"><label for="kat_s1_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εγκατάσταση drop cable από στύλο έως κτίριο</td>
+<td class="score-cell"><input type="radio" name="kat_s1_q2" id="kat_s1_q2_1" value="1"><label for="kat_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q2" id="kat_s1_q2_2" value="2"><label for="kat_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q2" id="kat_s1_q2_3" value="3"><label for="kat_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q2" id="kat_s1_q2_4" value="4"><label for="kat_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q2" id="kat_s1_q2_5" value="5"><label for="kat_s1_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Οδεύσεις καλωδίων σε πρόσοψη &amp; εσωτερικό κτιρίου (σωληνάκια, κανάλια)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kat_s1_q3" id="kat_s1_q3_1" value="1"><label for="kat_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q3" id="kat_s1_q3_2" value="2"><label for="kat_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q3" id="kat_s1_q3_3" value="3"><label for="kat_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q3" id="kat_s1_q3_4" value="4"><label for="kat_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q3" id="kat_s1_q3_5" value="5"><label for="kat_s1_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Γεφύρωση &amp; διάτρηση τοίχων / οροφών για οδεύσεις ινών</td>
+<td class="score-cell"><input type="radio" name="kat_s1_q4" id="kat_s1_q4_1" value="1"><label for="kat_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q4" id="kat_s1_q4_2" value="2"><label for="kat_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q4" id="kat_s1_q4_3" value="3"><label for="kat_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q4" id="kat_s1_q4_4" value="4"><label for="kat_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q4" id="kat_s1_q4_5" value="5"><label for="kat_s1_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Χρήση & φροντίδα εξοπλισμού (cleaver, splicer, cable blower, OPM)</td>
+<td class="score-cell"><input type="radio" name="kat_s1_q5" id="kat_s1_q5_1" value="1"><label for="kat_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q5" id="kat_s1_q5_2" value="2"><label for="kat_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q5" id="kat_s1_q5_3" value="3"><label for="kat_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q5" id="kat_s1_q5_4" value="4"><label for="kat_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q5" id="kat_s1_q5_5" value="5"><label for="kat_s1_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εγκατάσταση & καλωδίωση τερματικών κουτιών</td>
+<td class="score-cell"><input type="radio" name="kat_s1_q6" id="kat_s1_q6_1" value="1"><label for="kat_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q6" id="kat_s1_q6_2" value="2"><label for="kat_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q6" id="kat_s1_q6_3" value="3"><label for="kat_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q6" id="kat_s1_q6_4" value="4"><label for="kat_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q6" id="kat_s1_q6_5" value="5"><label for="kat_s1_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εργασία σε ύψος (σκάλα, ανυψωτικό) – σωστή τεχνική & ασφάλεια</td>
+<td class="score-cell"><input type="radio" name="kat_s1_q7" id="kat_s1_q7_1" value="1"><label for="kat_s1_q7_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s1_q7" id="kat_s1_q7_2" value="2"><label for="kat_s1_q7_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s1_q7" id="kat_s1_q7_3" value="3"><label for="kat_s1_q7_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s1_q7" id="kat_s1_q7_4" value="4"><label for="kat_s1_q7_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s1_q7" id="kat_s1_q7_5" value="5"><label for="kat_s1_q7_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kat">
+    <div class="section-icon">⚡</div>
+    <div class="section-titles">
+      <div class="section-title">Ταχύτητα & Παραγωγικότητα</div>
+      <div class="section-sub">Αποδοτικότητα · Χρόνος · Στόχοι SR</div>
+    </div>
+    <div class="section-score-badge" id="bs-kat_s2">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ρυθμός ολοκλήρωσης εργασιών vs. εκτιμώμενου χρόνου</td>
+<td class="score-cell"><input type="radio" name="kat_s2_q1" id="kat_s2_q1_1" value="1"><label for="kat_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s2_q1" id="kat_s2_q1_2" value="2"><label for="kat_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s2_q1" id="kat_s2_q1_3" value="3"><label for="kat_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s2_q1" id="kat_s2_q1_4" value="4"><label for="kat_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s2_q1" id="kat_s2_q1_5" value="5"><label for="kat_s2_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοποίηση χρόνου στο πεδίο – μετακινήσεις, στημόνια, προετοιμασία</td>
+<td class="score-cell"><input type="radio" name="kat_s2_q2" id="kat_s2_q2_1" value="1"><label for="kat_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s2_q2" id="kat_s2_q2_2" value="2"><label for="kat_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s2_q2" id="kat_s2_q2_3" value="3"><label for="kat_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s2_q2" id="kat_s2_q2_4" value="4"><label for="kat_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s2_q2" id="kat_s2_q2_5" value="5"><label for="kat_s2_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αντιμετώπιση απρόβλεπτων προβλημάτων & ελαχιστοποίηση καθυστερήσεων</td>
+<td class="score-cell"><input type="radio" name="kat_s2_q3" id="kat_s2_q3_1" value="1"><label for="kat_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s2_q3" id="kat_s2_q3_2" value="2"><label for="kat_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s2_q3" id="kat_s2_q3_3" value="3"><label for="kat_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s2_q3" id="kat_s2_q3_4" value="4"><label for="kat_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s2_q3" id="kat_s2_q3_5" value="5"><label for="kat_s2_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση ημερήσιων / εβδομαδιαίων στόχων SR</td>
+<td class="score-cell"><input type="radio" name="kat_s2_q4" id="kat_s2_q4_1" value="1"><label for="kat_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s2_q4" id="kat_s2_q4_2" value="2"><label for="kat_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s2_q4" id="kat_s2_q4_3" value="3"><label for="kat_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s2_q4" id="kat_s2_q4_4" value="4"><label for="kat_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s2_q4" id="kat_s2_q4_5" value="5"><label for="kat_s2_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kat">
+    <div class="section-icon">✅</div>
+    <div class="section-titles">
+      <div class="section-title">Ποιότητα & Τεκμηρίωση</div>
+      <div class="section-sub">Αυτοψία · Huskies/FSM · Φωτογραφίες · Αναφορές</div>
+    </div>
+    <div class="section-score-badge" id="bs-kat_s3">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ποιότητα εγκατάστασης – ευθυγράμμιση, στερέωση, αισθητική</td>
+<td class="score-cell"><input type="radio" name="kat_s3_q1" id="kat_s3_q1_1" value="1"><label for="kat_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q1" id="kat_s3_q1_2" value="2"><label for="kat_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q1" id="kat_s3_q1_3" value="3"><label for="kat_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q1" id="kat_s3_q1_4" value="4"><label for="kat_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q1" id="kat_s3_q1_5" value="5"><label for="kat_s3_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ορθή ετικέτωση ινών & κατανεμητών, ακεραιότητα splice tray</td>
+<td class="score-cell"><input type="radio" name="kat_s3_q2" id="kat_s3_q2_1" value="1"><label for="kat_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q2" id="kat_s3_q2_2" value="2"><label for="kat_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q2" id="kat_s3_q2_3" value="3"><label for="kat_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q2" id="kat_s3_q2_4" value="4"><label for="kat_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q2" id="kat_s3_q2_5" value="5"><label for="kat_s3_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Καταγραφή αυτοψίας στο Huskies/FSM – πληρότητα & ακρίβεια<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="kat_s3_q3" id="kat_s3_q3_1" value="1"><label for="kat_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q3" id="kat_s3_q3_2" value="2"><label for="kat_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q3" id="kat_s3_q3_3" value="3"><label for="kat_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q3" id="kat_s3_q3_4" value="4"><label for="kat_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q3" id="kat_s3_q3_5" value="5"><label for="kat_s3_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση (FB, BCP, Οδεύσεις)</td>
+<td class="score-cell"><input type="radio" name="kat_s3_q4" id="kat_s3_q4_1" value="1"><label for="kat_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q4" id="kat_s3_q4_2" value="2"><label for="kat_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q4" id="kat_s3_q4_3" value="3"><label for="kat_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q4" id="kat_s3_q4_4" value="4"><label for="kat_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q4" id="kat_s3_q4_5" value="5"><label for="kat_s3_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τεκμηρίωση εγκατεστημένων στοιχείων (αρ. CAB, θέσεις, drop IDs)</td>
+<td class="score-cell"><input type="radio" name="kat_s3_q5" id="kat_s3_q5_1" value="1"><label for="kat_s3_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q5" id="kat_s3_q5_2" value="2"><label for="kat_s3_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q5" id="kat_s3_q5_3" value="3"><label for="kat_s3_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q5" id="kat_s3_q5_4" value="4"><label for="kat_s3_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q5" id="kat_s3_q5_5" value="5"><label for="kat_s3_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τακτοποίηση εργοταξίου, καθαριότητα & αποκατάσταση χώρου</td>
+<td class="score-cell"><input type="radio" name="kat_s3_q6" id="kat_s3_q6_1" value="1"><label for="kat_s3_q6_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s3_q6" id="kat_s3_q6_2" value="2"><label for="kat_s3_q6_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s3_q6" id="kat_s3_q6_3" value="3"><label for="kat_s3_q6_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s3_q6" id="kat_s3_q6_4" value="4"><label for="kat_s3_q6_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s3_q6" id="kat_s3_q6_5" value="5"><label for="kat_s3_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kat">
+    <div class="section-icon">🤝</div>
+    <div class="section-titles">
+      <div class="section-title">Συμπεριφορά & Ομαδικότητα</div>
+      <div class="section-sub">Επικοινωνία · Αξιοπιστία · Ευελιξία · Ασφάλεια</div>
+    </div>
+    <div class="section-score-badge" id="bs-kat_s4">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Επικοινωνία με επόπτη & ομάδα – σαφήνεια, έγκαιρη ενημέρωση</td>
+<td class="score-cell"><input type="radio" name="kat_s4_q1" id="kat_s4_q1_1" value="1"><label for="kat_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q1" id="kat_s4_q1_2" value="2"><label for="kat_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q1" id="kat_s4_q1_3" value="3"><label for="kat_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q1" id="kat_s4_q1_4" value="4"><label for="kat_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q1" id="kat_s4_q1_5" value="5"><label for="kat_s4_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοπιστία & συνέπεια – ωράρια, δεσμεύσεις, παρουσία</td>
+<td class="score-cell"><input type="radio" name="kat_s4_q2" id="kat_s4_q2_1" value="1"><label for="kat_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q2" id="kat_s4_q2_2" value="2"><label for="kat_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q2" id="kat_s4_q2_3" value="3"><label for="kat_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q2" id="kat_s4_q2_4" value="4"><label for="kat_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q2" id="kat_s4_q2_5" value="5"><label for="kat_s4_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία με συναδέλφους & στήριξη νεότερων τεχνικών</td>
+<td class="score-cell"><input type="radio" name="kat_s4_q3" id="kat_s4_q3_1" value="1"><label for="kat_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q3" id="kat_s4_q3_2" value="2"><label for="kat_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q3" id="kat_s4_q3_3" value="3"><label for="kat_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q3" id="kat_s4_q3_4" value="4"><label for="kat_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q3" id="kat_s4_q3_5" value="5"><label for="kat_s4_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ευελιξία – αποδοχή αλλαγών, εκτός σχεδίου καταστάσεις</td>
+<td class="score-cell"><input type="radio" name="kat_s4_q4" id="kat_s4_q4_1" value="1"><label for="kat_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q4" id="kat_s4_q4_2" value="2"><label for="kat_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q4" id="kat_s4_q4_3" value="3"><label for="kat_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q4" id="kat_s4_q4_4" value="4"><label for="kat_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q4" id="kat_s4_q4_5" value="5"><label for="kat_s4_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τήρηση κανόνων ασφαλείας (ΜΑΠ, σήμανση, εργασία σε ύψος)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kat_s4_q5" id="kat_s4_q5_1" value="1"><label for="kat_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q5" id="kat_s4_q5_2" value="2"><label for="kat_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q5" id="kat_s4_q5_3" value="3"><label for="kat_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q5" id="kat_s4_q5_4" value="4"><label for="kat_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q5" id="kat_s4_q5_5" value="5"><label for="kat_s4_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία & διάθεση μάθησης / βελτίωσης</td>
+<td class="score-cell"><input type="radio" name="kat_s4_q6" id="kat_s4_q6_1" value="1"><label for="kat_s4_q6_1">1</label></td><td class="score-cell"><input type="radio" name="kat_s4_q6" id="kat_s4_q6_2" value="2"><label for="kat_s4_q6_2">2</label></td><td class="score-cell"><input type="radio" name="kat_s4_q6" id="kat_s4_q6_3" value="3"><label for="kat_s4_q6_3">3</label></td><td class="score-cell"><input type="radio" name="kat_s4_q6" id="kat_s4_q6_4" value="4"><label for="kat_s4_q6_4">4</label></td><td class="score-cell"><input type="radio" name="kat_s4_q6" id="kat_s4_q6_5" value="5"><label for="kat_s4_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(4, 1fr) 1.4fr;"><div class="sum-card">
+  <label>Τεχνικές Δεξ.</label>
+  <div class="val" id="s-kat-s1">—</div>
+  <div class="max">/ 35</div>
+</div><div class="sum-card">
+  <label>Παραγωγικότητα</label>
+  <div class="val" id="s-kat-s2">—</div>
+  <div class="max">/ 20</div>
+</div><div class="sum-card">
+  <label>Ποιότητα & Τεκμ.</label>
+  <div class="val" id="s-kat-s3">—</div>
+  <div class="max">/ 30</div>
+</div><div class="sum-card">
+  <label>Συμπεριφορά</label>
+  <div class="val" id="s-kat-s4">—</div>
+  <div class="max">/ 30</div>
+</div><div class="sum-card total">
+  <label>Συνολικό Σκορ</label>
+  <div class="val" id="s-kat-total">—</div>
+  <div class="max">/ 115</div>
+</div></div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+<!-- ═══ TAB: ΚΟΛΛΗΣΗ ═══ -->
+<div class="tab-panel" id="panel-kol">
+  <div class="stage-banner" data-tab="kol">🔬 &nbsp;Στάδιο Αξιολόγησης: <strong>ΚΟΛΛΗΣΗ</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-kol">
+    <div class="section-icon">🔬</div>
+    <div class="section-titles">
+      <div class="section-title">Τεχνικές Δεξιότητες Κόλλησης</div>
+      <div class="section-sub">Προετοιμασία · Splicer · Ποιότητα · OTDR</div>
+    </div>
+    <div class="section-score-badge" id="bs-kol_s1">— / 35</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Προετοιμασία ινών – stripping, cleaning, cleaving<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q1" id="kol_s1_q1_1" value="1"><label for="kol_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q1" id="kol_s1_q1_2" value="2"><label for="kol_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q1" id="kol_s1_q1_3" value="3"><label for="kol_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q1" id="kol_s1_q1_4" value="4"><label for="kol_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q1" id="kol_s1_q1_5" value="5"><label for="kol_s1_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Χρήση fusion splicer – ρυθμίσεις & εκτέλεση συγκόλλησης<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q2" id="kol_s1_q2_1" value="1"><label for="kol_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q2" id="kol_s1_q2_2" value="2"><label for="kol_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q2" id="kol_s1_q2_3" value="3"><label for="kol_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q2" id="kol_s1_q2_4" value="4"><label for="kol_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q2" id="kol_s1_q2_5" value="5"><label for="kol_s1_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Ποιότητα συγκολλήσεων (απώλεια ≤ 0.1 dB κατά spec)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q3" id="kol_s1_q3_1" value="1"><label for="kol_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q3" id="kol_s1_q3_2" value="2"><label for="kol_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q3" id="kol_s1_q3_3" value="3"><label for="kol_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q3" id="kol_s1_q3_4" value="4"><label for="kol_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q3" id="kol_s1_q3_5" value="5"><label for="kol_s1_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Χρήση OTDR για επαλήθευση κάθε splice<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q4" id="kol_s1_q4_1" value="1"><label for="kol_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q4" id="kol_s1_q4_2" value="2"><label for="kol_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q4" id="kol_s1_q4_3" value="3"><label for="kol_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q4" id="kol_s1_q4_4" value="4"><label for="kol_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q4" id="kol_s1_q4_5" value="5"><label for="kol_s1_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τοποθέτηση splice protection & διαχείριση splice tray<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q5" id="kol_s1_q5_1" value="1"><label for="kol_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q5" id="kol_s1_q5_2" value="2"><label for="kol_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q5" id="kol_s1_q5_3" value="3"><label for="kol_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q5" id="kol_s1_q5_4" value="4"><label for="kol_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q5" id="kol_s1_q5_5" value="5"><label for="kol_s1_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Οργάνωση & ετικέτωση ινών σε closure / joint box<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="kol_s1_q6" id="kol_s1_q6_1" value="1"><label for="kol_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q6" id="kol_s1_q6_2" value="2"><label for="kol_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q6" id="kol_s1_q6_3" value="3"><label for="kol_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q6" id="kol_s1_q6_4" value="4"><label for="kol_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q6" id="kol_s1_q6_5" value="5"><label for="kol_s1_q6_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Σωστό κλείσιμο closure & έλεγχος στεγανότητας</td>
+<td class="score-cell"><input type="radio" name="kol_s1_q7" id="kol_s1_q7_1" value="1"><label for="kol_s1_q7_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s1_q7" id="kol_s1_q7_2" value="2"><label for="kol_s1_q7_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s1_q7" id="kol_s1_q7_3" value="3"><label for="kol_s1_q7_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s1_q7" id="kol_s1_q7_4" value="4"><label for="kol_s1_q7_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s1_q7" id="kol_s1_q7_5" value="5"><label for="kol_s1_q7_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kol">
+    <div class="section-icon">⚡</div>
+    <div class="section-titles">
+      <div class="section-title">Ταχύτητα & Παραγωγικότητα</div>
+      <div class="section-sub">Ρυθμός · Στόχοι · Επισκευές</div>
+    </div>
+    <div class="section-score-badge" id="bs-kol_s2">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ρυθμός συγκολλήσεων vs. ημερήσιος στόχος</td>
+<td class="score-cell"><input type="radio" name="kol_s2_q1" id="kol_s2_q1_1" value="1"><label for="kol_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s2_q1" id="kol_s2_q1_2" value="2"><label for="kol_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s2_q1" id="kol_s2_q1_3" value="3"><label for="kol_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s2_q1" id="kol_s2_q1_4" value="4"><label for="kol_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s2_q1" id="kol_s2_q1_5" value="5"><label for="kol_s2_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοποίηση χρόνου & σωστή προετοιμασία χώρου</td>
+<td class="score-cell"><input type="radio" name="kol_s2_q2" id="kol_s2_q2_1" value="1"><label for="kol_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s2_q2" id="kol_s2_q2_2" value="2"><label for="kol_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s2_q2" id="kol_s2_q2_3" value="3"><label for="kol_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s2_q2" id="kol_s2_q2_4" value="4"><label for="kol_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s2_q2" id="kol_s2_q2_5" value="5"><label for="kol_s2_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Διαχείριση ελαττωματικών splices – ταχεία επαν-εκτέλεση</td>
+<td class="score-cell"><input type="radio" name="kol_s2_q3" id="kol_s2_q3_1" value="1"><label for="kol_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s2_q3" id="kol_s2_q3_2" value="2"><label for="kol_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s2_q3" id="kol_s2_q3_3" value="3"><label for="kol_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s2_q3" id="kol_s2_q3_4" value="4"><label for="kol_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s2_q3" id="kol_s2_q3_5" value="5"><label for="kol_s2_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση εβδομαδιαίων στόχων SR</td>
+<td class="score-cell"><input type="radio" name="kol_s2_q4" id="kol_s2_q4_1" value="1"><label for="kol_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s2_q4" id="kol_s2_q4_2" value="2"><label for="kol_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s2_q4" id="kol_s2_q4_3" value="3"><label for="kol_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s2_q4" id="kol_s2_q4_4" value="4"><label for="kol_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s2_q4" id="kol_s2_q4_5" value="5"><label for="kol_s2_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kol">
+    <div class="section-icon">✅</div>
+    <div class="section-titles">
+      <div class="section-title">Ποιότητα & Τεκμηρίωση</div>
+      <div class="section-sub">OTDR reports · Huskies/FSM · Φωτογραφίες</div>
+    </div>
+    <div class="section-score-badge" id="bs-kol_s3">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Ακεραιότητα splice tray & closure (σωστό κλείσιμο)<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s3_q1" id="kol_s3_q1_1" value="1"><label for="kol_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s3_q1" id="kol_s3_q1_2" value="2"><label for="kol_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s3_q1" id="kol_s3_q1_3" value="3"><label for="kol_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s3_q1" id="kol_s3_q1_4" value="4"><label for="kol_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s3_q1" id="kol_s3_q1_5" value="5"><label for="kol_s3_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>OTDR αναφορές – μορφοποίηση, κατοχύρωση, αρχειοθέτηση<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="kol_s3_q2" id="kol_s3_q2_1" value="1"><label for="kol_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s3_q2" id="kol_s3_q2_2" value="2"><label for="kol_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s3_q2" id="kol_s3_q2_3" value="3"><label for="kol_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s3_q2" id="kol_s3_q2_4" value="4"><label for="kol_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s3_q2" id="kol_s3_q2_5" value="5"><label for="kol_s3_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Καταγραφή αυτοψίας στο Huskies/FSM – πληρότητα & ακρίβεια<span class="badge badge-key">Σημαντικό</span></td>
+<td class="score-cell"><input type="radio" name="kol_s3_q3" id="kol_s3_q3_1" value="1"><label for="kol_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s3_q3" id="kol_s3_q3_2" value="2"><label for="kol_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s3_q3" id="kol_s3_q3_3" value="3"><label for="kol_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s3_q3" id="kol_s3_q3_4" value="4"><label for="kol_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s3_q3" id="kol_s3_q3_5" value="5"><label for="kol_s3_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Φωτογραφική τεκμηρίωση (splice trays, closures, OTDR screen)</td>
+<td class="score-cell"><input type="radio" name="kol_s3_q4" id="kol_s3_q4_1" value="1"><label for="kol_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s3_q4" id="kol_s3_q4_2" value="2"><label for="kol_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s3_q4" id="kol_s3_q4_3" value="3"><label for="kol_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s3_q4" id="kol_s3_q4_4" value="4"><label for="kol_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s3_q4" id="kol_s3_q4_5" value="5"><label for="kol_s3_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Τακτοποίηση χώρου εργασίας & ασφαλής διάθεση θραυσμάτων</td>
+<td class="score-cell"><input type="radio" name="kol_s3_q5" id="kol_s3_q5_1" value="1"><label for="kol_s3_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s3_q5" id="kol_s3_q5_2" value="2"><label for="kol_s3_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s3_q5" id="kol_s3_q5_3" value="3"><label for="kol_s3_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s3_q5" id="kol_s3_q5_4" value="4"><label for="kol_s3_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s3_q5" id="kol_s3_q5_5" value="5"><label for="kol_s3_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-kol">
+    <div class="section-icon">🤝</div>
+    <div class="section-titles">
+      <div class="section-title">Συμπεριφορά & Ασφάλεια</div>
+      <div class="section-sub">ΜΑΠ · Ιοί ινών · Επικοινωνία · Ομαδικότητα</div>
+    </div>
+    <div class="section-score-badge" id="bs-kol_s4">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Τήρηση ΜΑΠ & ασφαλής διαχείριση θραυσμάτων οπτικών ινών<span class="badge badge-req">Κρίσιμο</span></td>
+<td class="score-cell"><input type="radio" name="kol_s4_q1" id="kol_s4_q1_1" value="1"><label for="kol_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s4_q1" id="kol_s4_q1_2" value="2"><label for="kol_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s4_q1" id="kol_s4_q1_3" value="3"><label for="kol_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s4_q1" id="kol_s4_q1_4" value="4"><label for="kol_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s4_q1" id="kol_s4_q1_5" value="5"><label for="kol_s4_q1_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Επικοινωνία με επόπτη & ομάδα – έγκαιρη ενημέρωση</td>
+<td class="score-cell"><input type="radio" name="kol_s4_q2" id="kol_s4_q2_1" value="1"><label for="kol_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s4_q2" id="kol_s4_q2_2" value="2"><label for="kol_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s4_q2" id="kol_s4_q2_3" value="3"><label for="kol_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s4_q2" id="kol_s4_q2_4" value="4"><label for="kol_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s4_q2" id="kol_s4_q2_5" value="5"><label for="kol_s4_q2_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Αξιοπιστία & συνέπεια – ωράρια, δεσμεύσεις</td>
+<td class="score-cell"><input type="radio" name="kol_s4_q3" id="kol_s4_q3_1" value="1"><label for="kol_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s4_q3" id="kol_s4_q3_2" value="2"><label for="kol_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s4_q3" id="kol_s4_q3_3" value="3"><label for="kol_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s4_q3" id="kol_s4_q3_4" value="4"><label for="kol_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s4_q3" id="kol_s4_q3_5" value="5"><label for="kol_s4_q3_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία & στήριξη συναδέλφων</td>
+<td class="score-cell"><input type="radio" name="kol_s4_q4" id="kol_s4_q4_1" value="1"><label for="kol_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s4_q4" id="kol_s4_q4_2" value="2"><label for="kol_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s4_q4" id="kol_s4_q4_3" value="3"><label for="kol_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s4_q4" id="kol_s4_q4_4" value="4"><label for="kol_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s4_q4" id="kol_s4_q4_5" value="5"><label for="kol_s4_q4_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία & διάθεση μάθησης / βελτίωσης</td>
+<td class="score-cell"><input type="radio" name="kol_s4_q5" id="kol_s4_q5_1" value="1"><label for="kol_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="kol_s4_q5" id="kol_s4_q5_2" value="2"><label for="kol_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="kol_s4_q5" id="kol_s4_q5_3" value="3"><label for="kol_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="kol_s4_q5" id="kol_s4_q5_4" value="4"><label for="kol_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="kol_s4_q5" id="kol_s4_q5_5" value="5"><label for="kol_s4_q5_5">5</label></td>
+<td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(4, 1fr) 1.4fr;"><div class="sum-card">
+  <label>Τεχνικές Κόλλησης</label>
+  <div class="val" id="s-kol-s1">—</div>
+  <div class="max">/ 35</div>
+</div><div class="sum-card">
+  <label>Παραγωγικότητα</label>
+  <div class="val" id="s-kol-s2">—</div>
+  <div class="max">/ 20</div>
+</div><div class="sum-card">
+  <label>Ποιότητα & Τεκμ.</label>
+  <div class="val" id="s-kol-s3">—</div>
+  <div class="max">/ 25</div>
+</div><div class="sum-card">
+  <label>Συμπ. & Ασφ.</label>
+  <div class="val" id="s-kol-s4">—</div>
+  <div class="max">/ 25</div>
+</div><div class="sum-card total">
+  <label>Συνολικό Σκορ</label>
+  <div class="val" id="s-kol-total">—</div>
+  <div class="max">/ 105</div>
+</div></div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>OptikiTec</strong>&nbsp;· FTTH Infrastructure · Αττική / Πάτρα / Αίγιο / Κόρινθος
+  <span id="footer-stage">Στάδιο: Αυτοψία</span>
+</div>
+
+<!-- ═══ TAB: BACKOFFICE ═══ -->
+<div class="tab-panel" id="panel-bk">
+  <div class="stage-banner" data-tab="bk">🖥️ &nbsp;Αξιολόγηση: <strong>BACKOFFICE</strong></div>
+  <div class="body">
+    <div class="scale-bar">
+      <strong>Κλίμακα:</strong>
+      <span class="scale-pill"><span class="num">1</span>Ανεπαρκής</span>
+      <span class="scale-pill"><span class="num">2</span>Χρήζει Βελτίωσης</span>
+      <span class="scale-pill"><span class="num">3</span>Ικανοποιητικός</span>
+      <span class="scale-pill"><span class="num">4</span>Καλός</span>
+      <span class="scale-pill"><span class="num">5</span>Εξαιρετικός</span>
+    </div>
+    <div class="section">
+  <div class="section-header sh-bk">
+    <div class="section-icon">🖥️</div>
+    <div class="section-titles">
+      <div class="section-title">Διαχείριση SR & Συστημάτων</div>
+      <div class="section-sub">Huskies · FSM · Ανάθεση · Aging · Excel</div>
+    </div>
+    <div class="section-score-badge" id="bs-bk_s1">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Χειρισμός & διαχείριση SR στο Huskies/FSM – ακρίβεια καταχωρήσεων<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s1_q1" id="bk_s1_q1_1" value="1"><label for="bk_s1_q1_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q1" id="bk_s1_q1_2" value="2"><label for="bk_s1_q1_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q1" id="bk_s1_q1_3" value="3"><label for="bk_s1_q1_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q1" id="bk_s1_q1_4" value="4"><label for="bk_s1_q1_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q1" id="bk_s1_q1_5" value="5"><label for="bk_s1_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ανάθεση εργασιών σε κατάλληλους τεχνικούς βάσει φάσης & περιοχής<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s1_q2" id="bk_s1_q2_1" value="1"><label for="bk_s1_q2_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q2" id="bk_s1_q2_2" value="2"><label for="bk_s1_q2_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q2" id="bk_s1_q2_3" value="3"><label for="bk_s1_q2_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q2" id="bk_s1_q2_4" value="4"><label for="bk_s1_q2_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q2" id="bk_s1_q2_5" value="5"><label for="bk_s1_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Παρακολούθηση aging αναφορών & έγκαιρη ανάληψη δράσης<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s1_q3" id="bk_s1_q3_1" value="1"><label for="bk_s1_q3_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q3" id="bk_s1_q3_2" value="2"><label for="bk_s1_q3_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q3" id="bk_s1_q3_3" value="3"><label for="bk_s1_q3_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q3" id="bk_s1_q3_4" value="4"><label for="bk_s1_q3_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q3" id="bk_s1_q3_5" value="5"><label for="bk_s1_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Κατανόηση φάσεων έργου (Αυτοψία → Χωματουργικό → Εμφύσηση → Κατασκευή → Κόλληση)<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="bk_s1_q4" id="bk_s1_q4_1" value="1"><label for="bk_s1_q4_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q4" id="bk_s1_q4_2" value="2"><label for="bk_s1_q4_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q4" id="bk_s1_q4_3" value="3"><label for="bk_s1_q4_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q4" id="bk_s1_q4_4" value="4"><label for="bk_s1_q4_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q4" id="bk_s1_q4_5" value="5"><label for="bk_s1_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Γνώση & αποτελεσματική χρήση συστημάτων (Huskies, FSM, Excel)</td><td class="score-cell"><input type="radio" name="bk_s1_q5" id="bk_s1_q5_1" value="1"><label for="bk_s1_q5_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q5" id="bk_s1_q5_2" value="2"><label for="bk_s1_q5_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q5" id="bk_s1_q5_3" value="3"><label for="bk_s1_q5_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q5" id="bk_s1_q5_4" value="4"><label for="bk_s1_q5_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q5" id="bk_s1_q5_5" value="5"><label for="bk_s1_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ταχύτητα & ακρίβεια επεξεργασίας SR στο σύστημα</td><td class="score-cell"><input type="radio" name="bk_s1_q6" id="bk_s1_q6_1" value="1"><label for="bk_s1_q6_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s1_q6" id="bk_s1_q6_2" value="2"><label for="bk_s1_q6_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s1_q6" id="bk_s1_q6_3" value="3"><label for="bk_s1_q6_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s1_q6" id="bk_s1_q6_4" value="4"><label for="bk_s1_q6_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s1_q6" id="bk_s1_q6_5" value="5"><label for="bk_s1_q6_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-bk">
+    <div class="section-icon">✅</div>
+    <div class="section-titles">
+      <div class="section-title">Ποιότητα & Έλεγχος Τεκμηρίωσης</div>
+      <div class="section-sub">Φωτογραφίες · OTDR · Εκκρεμότητες · Δεδομένα</div>
+    </div>
+    <div class="section-score-badge" id="bs-bk_s2">— / 25</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Επαλήθευση φωτογραφικής τεκμηρίωσης τεχνικών – πληρότητα & ακρίβεια<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s2_q1" id="bk_s2_q1_1" value="1"><label for="bk_s2_q1_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s2_q1" id="bk_s2_q1_2" value="2"><label for="bk_s2_q1_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s2_q1" id="bk_s2_q1_3" value="3"><label for="bk_s2_q1_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s2_q1" id="bk_s2_q1_4" value="4"><label for="bk_s2_q1_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s2_q1" id="bk_s2_q1_5" value="5"><label for="bk_s2_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Έλεγχος OTDR reports πριν υποβολή<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s2_q2" id="bk_s2_q2_1" value="1"><label for="bk_s2_q2_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s2_q2" id="bk_s2_q2_2" value="2"><label for="bk_s2_q2_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s2_q2" id="bk_s2_q2_3" value="3"><label for="bk_s2_q2_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s2_q2" id="bk_s2_q2_4" value="4"><label for="bk_s2_q2_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s2_q2" id="bk_s2_q2_5" value="5"><label for="bk_s2_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Εντοπισμός λαθών / ελλείψεων & επιστροφή για διόρθωση<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="bk_s2_q3" id="bk_s2_q3_1" value="1"><label for="bk_s2_q3_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s2_q3" id="bk_s2_q3_2" value="2"><label for="bk_s2_q3_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s2_q3" id="bk_s2_q3_3" value="3"><label for="bk_s2_q3_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s2_q3" id="bk_s2_q3_4" value="4"><label for="bk_s2_q3_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s2_q3" id="bk_s2_q3_5" value="5"><label for="bk_s2_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Παρακολούθηση & κλείσιμο εκκρεμοτήτων</td><td class="score-cell"><input type="radio" name="bk_s2_q4" id="bk_s2_q4_1" value="1"><label for="bk_s2_q4_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s2_q4" id="bk_s2_q4_2" value="2"><label for="bk_s2_q4_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s2_q4" id="bk_s2_q4_3" value="3"><label for="bk_s2_q4_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s2_q4" id="bk_s2_q4_4" value="4"><label for="bk_s2_q4_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s2_q4" id="bk_s2_q4_5" value="5"><label for="bk_s2_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ακρίβεια δεδομένων στο σύστημα – μηδενικά σφάλματα υποβολής</td><td class="score-cell"><input type="radio" name="bk_s2_q5" id="bk_s2_q5_1" value="1"><label for="bk_s2_q5_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s2_q5" id="bk_s2_q5_2" value="2"><label for="bk_s2_q5_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s2_q5" id="bk_s2_q5_3" value="3"><label for="bk_s2_q5_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s2_q5" id="bk_s2_q5_4" value="4"><label for="bk_s2_q5_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s2_q5" id="bk_s2_q5_5" value="5"><label for="bk_s2_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-bk">
+    <div class="section-icon">🚨</div>
+    <div class="section-titles">
+      <div class="section-title">Παραγωγικότητα & Διαχείριση Κρίσεων</div>
+      <div class="section-sub">Χρόνος SR · Στόχοι · Έκτακτα · Αποφάσεις</div>
+    </div>
+    <div class="section-score-badge" id="bs-bk_s3">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Χρόνος επεξεργασίας SR vs. ημερήσιος στόχος</td><td class="score-cell"><input type="radio" name="bk_s3_q1" id="bk_s3_q1_1" value="1"><label for="bk_s3_q1_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q1" id="bk_s3_q1_2" value="2"><label for="bk_s3_q1_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q1" id="bk_s3_q1_3" value="3"><label for="bk_s3_q1_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q1" id="bk_s3_q1_4" value="4"><label for="bk_s3_q1_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q1" id="bk_s3_q1_5" value="5"><label for="bk_s3_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Εκπλήρωση ημερήσιων / εβδομαδιαίων στόχων & ελαχιστοποίηση backlog</td><td class="score-cell"><input type="radio" name="bk_s3_q2" id="bk_s3_q2_1" value="1"><label for="bk_s3_q2_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q2" id="bk_s3_q2_2" value="2"><label for="bk_s3_q2_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q2" id="bk_s3_q2_3" value="3"><label for="bk_s3_q2_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q2" id="bk_s3_q2_4" value="4"><label for="bk_s3_q2_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q2" id="bk_s3_q2_5" value="5"><label for="bk_s3_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Διαχείριση πολλαπλών αιτημάτων ταυτόχρονα χωρίς λάθη</td><td class="score-cell"><input type="radio" name="bk_s3_q3" id="bk_s3_q3_1" value="1"><label for="bk_s3_q3_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q3" id="bk_s3_q3_2" value="2"><label for="bk_s3_q3_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q3" id="bk_s3_q3_3" value="3"><label for="bk_s3_q3_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q3" id="bk_s3_q3_4" value="4"><label for="bk_s3_q3_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q3" id="bk_s3_q3_5" value="5"><label for="bk_s3_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Αντιμετώπιση έκτακτων / επείγοντων αναθέσεων<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s3_q4" id="bk_s3_q4_1" value="1"><label for="bk_s3_q4_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q4" id="bk_s3_q4_2" value="2"><label for="bk_s3_q4_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q4" id="bk_s3_q4_3" value="3"><label for="bk_s3_q4_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q4" id="bk_s3_q4_4" value="4"><label for="bk_s3_q4_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q4" id="bk_s3_q4_5" value="5"><label for="bk_s3_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ικανότητα ορθής ιεράρχησης προτεραιοτήτων υπό πίεση</td><td class="score-cell"><input type="radio" name="bk_s3_q5" id="bk_s3_q5_1" value="1"><label for="bk_s3_q5_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q5" id="bk_s3_q5_2" value="2"><label for="bk_s3_q5_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q5" id="bk_s3_q5_3" value="3"><label for="bk_s3_q5_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q5" id="bk_s3_q5_4" value="4"><label for="bk_s3_q5_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q5" id="bk_s3_q5_5" value="5"><label for="bk_s3_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Λήψη αποφάσεων & διαχείριση εξαιρέσεων χωρίς άμεση εμπλοκή επόπτη</td><td class="score-cell"><input type="radio" name="bk_s3_q6" id="bk_s3_q6_1" value="1"><label for="bk_s3_q6_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s3_q6" id="bk_s3_q6_2" value="2"><label for="bk_s3_q6_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s3_q6" id="bk_s3_q6_3" value="3"><label for="bk_s3_q6_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s3_q6" id="bk_s3_q6_4" value="4"><label for="bk_s3_q6_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s3_q6" id="bk_s3_q6_5" value="5"><label for="bk_s3_q6_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-bk">
+    <div class="section-icon">📈</div>
+    <div class="section-titles">
+      <div class="section-title">KPI, Αναφορές & Επικοινωνία</div>
+      <div class="section-sub">Aging · Αναφορές · Τεχνικοί · Επόπτες</div>
+    </div>
+    <div class="section-score-badge" id="bs-bk_s4">— / 30</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Tracking aging SR ανά δήμο & έγκαιρος εντοπισμός καθυστερήσεων<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="bk_s4_q1" id="bk_s4_q1_1" value="1"><label for="bk_s4_q1_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q1" id="bk_s4_q1_2" value="2"><label for="bk_s4_q1_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q1" id="bk_s4_q1_3" value="3"><label for="bk_s4_q1_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q1" id="bk_s4_q1_4" value="4"><label for="bk_s4_q1_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q1" id="bk_s4_q1_5" value="5"><label for="bk_s4_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Παραγωγή εβδομαδιαίων / μηνιαίων αναφορών – ακρίβεια & πληρότητα<span class="badge badge-key">Σημαντικό</span></td><td class="score-cell"><input type="radio" name="bk_s4_q2" id="bk_s4_q2_1" value="1"><label for="bk_s4_q2_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q2" id="bk_s4_q2_2" value="2"><label for="bk_s4_q2_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q2" id="bk_s4_q2_3" value="3"><label for="bk_s4_q2_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q2" id="bk_s4_q2_4" value="4"><label for="bk_s4_q2_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q2" id="bk_s4_q2_5" value="5"><label for="bk_s4_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Πρόταση διορθωτικών ενεργειών βάσει KPI</td><td class="score-cell"><input type="radio" name="bk_s4_q3" id="bk_s4_q3_1" value="1"><label for="bk_s4_q3_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q3" id="bk_s4_q3_2" value="2"><label for="bk_s4_q3_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q3" id="bk_s4_q3_3" value="3"><label for="bk_s4_q3_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q3" id="bk_s4_q3_4" value="4"><label for="bk_s4_q3_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q3" id="bk_s4_q3_5" value="5"><label for="bk_s4_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Επικοινωνία με τεχνικούς πεδίου – σαφήνεια, έγκαιρη ενημέρωση<span class="badge badge-req">Κρίσιμο</span></td><td class="score-cell"><input type="radio" name="bk_s4_q4" id="bk_s4_q4_1" value="1"><label for="bk_s4_q4_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q4" id="bk_s4_q4_2" value="2"><label for="bk_s4_q4_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q4" id="bk_s4_q4_3" value="3"><label for="bk_s4_q4_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q4" id="bk_s4_q4_4" value="4"><label for="bk_s4_q4_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q4" id="bk_s4_q4_5" value="5"><label for="bk_s4_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Συνεργασία με επόπτες / PM & ενημέρωση ομάδας για εκκρεμότητες</td><td class="score-cell"><input type="radio" name="bk_s4_q5" id="bk_s4_q5_1" value="1"><label for="bk_s4_q5_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q5" id="bk_s4_q5_2" value="2"><label for="bk_s4_q5_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q5" id="bk_s4_q5_3" value="3"><label for="bk_s4_q5_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q5" id="bk_s4_q5_4" value="4"><label for="bk_s4_q5_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q5" id="bk_s4_q5_5" value="5"><label for="bk_s4_q5_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Διαχείριση δύσκολων καταστάσεων με ψυχραιμία</td><td class="score-cell"><input type="radio" name="bk_s4_q6" id="bk_s4_q6_1" value="1"><label for="bk_s4_q6_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s4_q6" id="bk_s4_q6_2" value="2"><label for="bk_s4_q6_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s4_q6" id="bk_s4_q6_3" value="3"><label for="bk_s4_q6_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s4_q6" id="bk_s4_q6_4" value="4"><label for="bk_s4_q6_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s4_q6" id="bk_s4_q6_5" value="5"><label for="bk_s4_q6_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div><div class="section">
+  <div class="section-header sh-bk">
+    <div class="section-icon">⭐</div>
+    <div class="section-titles">
+      <div class="section-title">Συμπεριφορά & Αξιοπιστία</div>
+      <div class="section-sub">Συνέπεια · Πρωτοβουλία · Ευελιξία · Μάθηση</div>
+    </div>
+    <div class="section-score-badge" id="bs-bk_s5">— / 20</div>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:44%">Κριτήριο</th>
+      <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+      <th style="width:20%">Παρατηρήσεις</th>
+    </tr></thead>
+    <tbody><tr><td>Συνέπεια & αξιοπιστία – ωράρια, δεσμεύσεις, παρουσία</td><td class="score-cell"><input type="radio" name="bk_s5_q1" id="bk_s5_q1_1" value="1"><label for="bk_s5_q1_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s5_q1" id="bk_s5_q1_2" value="2"><label for="bk_s5_q1_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s5_q1" id="bk_s5_q1_3" value="3"><label for="bk_s5_q1_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s5_q1" id="bk_s5_q1_4" value="4"><label for="bk_s5_q1_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s5_q1" id="bk_s5_q1_5" value="5"><label for="bk_s5_q1_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Πρωτοβουλία – αναγνώριση προβλημάτων χωρίς να του ζητηθεί</td><td class="score-cell"><input type="radio" name="bk_s5_q2" id="bk_s5_q2_1" value="1"><label for="bk_s5_q2_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s5_q2" id="bk_s5_q2_2" value="2"><label for="bk_s5_q2_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s5_q2" id="bk_s5_q2_3" value="3"><label for="bk_s5_q2_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s5_q2" id="bk_s5_q2_4" value="4"><label for="bk_s5_q2_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s5_q2" id="bk_s5_q2_5" value="5"><label for="bk_s5_q2_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Ευελιξία – αποδοχή αλλαγών & νέων αρμοδιοτήτων</td><td class="score-cell"><input type="radio" name="bk_s5_q3" id="bk_s5_q3_1" value="1"><label for="bk_s5_q3_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s5_q3" id="bk_s5_q3_2" value="2"><label for="bk_s5_q3_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s5_q3" id="bk_s5_q3_3" value="3"><label for="bk_s5_q3_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s5_q3" id="bk_s5_q3_4" value="4"><label for="bk_s5_q3_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s5_q3" id="bk_s5_q3_5" value="5"><label for="bk_s5_q3_5">5</label></td><td class="obs-cell"><input type="text"></td></tr><tr><td>Διάθεση μάθησης & βελτίωσης εργαλείων / διαδικασιών</td><td class="score-cell"><input type="radio" name="bk_s5_q4" id="bk_s5_q4_1" value="1"><label for="bk_s5_q4_1">1</label></td><td class="score-cell"><input type="radio" name="bk_s5_q4" id="bk_s5_q4_2" value="2"><label for="bk_s5_q4_2">2</label></td><td class="score-cell"><input type="radio" name="bk_s5_q4" id="bk_s5_q4_3" value="3"><label for="bk_s5_q4_3">3</label></td><td class="score-cell"><input type="radio" name="bk_s5_q4" id="bk_s5_q4_4" value="4"><label for="bk_s5_q4_4">4</label></td><td class="score-cell"><input type="radio" name="bk_s5_q4" id="bk_s5_q4_5" value="5"><label for="bk_s5_q4_5">5</label></td><td class="obs-cell"><input type="text"></td></tr></tbody>
+  </table>
+</div>
+    <div class="summary-wrap">
+  <div class="summary-title">Συνολική Βαθμολογία</div>
+  <div class="summary-bar" style="grid-template-columns:repeat(5, 1fr) 1.4fr;">
+    <div class="sum-card"><label>SR & Συστήματα</label><div class="val" id="s-bk-bk_s1">—</div><div class="max">/ 30</div></div>
+    <div class="sum-card"><label>Ποιότητα & Τεκμ.</label><div class="val" id="s-bk-bk_s2">—</div><div class="max">/ 25</div></div>
+    <div class="sum-card"><label>Παραγ. & Κρίσεις</label><div class="val" id="s-bk-bk_s3">—</div><div class="max">/ 30</div></div>
+    <div class="sum-card"><label>KPI & Επικοιν.</label><div class="val" id="s-bk-bk_s4">—</div><div class="max">/ 30</div></div>
+    <div class="sum-card"><label>Συμπεριφορά</label><div class="val" id="s-bk-bk_s5">—</div><div class="max">/ 20</div></div>
+    <div class="sum-card total"><label>Συνολικό Σκορ</label><div class="val" id="s-bk-total">—</div><div class="max">/ 135</div></div>
+  </div>
+</div><div class="perf-wrap">
+  <div class="summary-title" style="margin-bottom:6px">Αξιολόγηση Απόδοσης</div>
+  <div class="perf-row">
+    <div class="perf-opt p1"><input type="radio" name="perf" id="perf1" value="1"><label for="perf1">Ανεπαρκής<br><span style="font-size:7pt;font-weight:400;opacity:.8">&lt; 40%</span></label></div>
+    <div class="perf-opt p2"><input type="radio" name="perf" id="perf2" value="2"><label for="perf2">Χρήζει Βελτίωσης<br><span style="font-size:7pt;font-weight:400;opacity:.8">40–59%</span></label></div>
+    <div class="perf-opt p3"><input type="radio" name="perf" id="perf3" value="3"><label for="perf3">Ικανοποιητικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">60–74%</span></label></div>
+    <div class="perf-opt p4"><input type="radio" name="perf" id="perf4" value="4"><label for="perf4">Καλός<br><span style="font-size:7pt;font-weight:400;opacity:.8">75–89%</span></label></div>
+    <div class="perf-opt p5"><input type="radio" name="perf" id="perf5" value="5"><label for="perf5">Εξαιρετικός<br><span style="font-size:7pt;font-weight:400;opacity:.8">≥ 90%</span></label></div>
+  </div>
+</div><div class="comments-block">
+  <div class="comment-box"><label>Δυνατά Σημεία</label><textarea></textarea></div>
+  <div class="comment-box"><label>Τομείς Βελτίωσης</label><textarea></textarea></div>
+  <div class="comment-box" style="grid-column:1/-1"><label>Στόχοι Επόμενης Περιόδου & Γενικές Παρατηρήσεις Αξιολογητή</label><textarea></textarea></div>
+</div><div class="sigs">
+  <div class="sig-box"><div class="sig-area"></div><label>Αξιολογητής / Επόπτης</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Υπάλληλος (Έλαβε γνώση)</label></div>
+  <div class="sig-box"><div class="sig-area"></div><label>Διευθυντής / Υπεύθυνος Έργου</label></div>
+</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<div class="fab-wrap no-print">
+  <button class="fab fab-reset" onclick="resetForm()">
+    <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    Νέος Τεχνικός
+  </button>
+  <button class="fab fab-print" onclick="saveAsPDF()">
+    <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+    Αποθήκευση / Εκτύπωση
+  </button>
+</div>
+
+<script>
+const TABS = ['auto','choma','emf','kat','kol','bk'];
+const STAGE_NAMES = {auto:'Αυτοψία',choma:'Χωματουργικό',emf:'Εμφύσηση',kat:'Κατασκευή',kol:'Κόλληση',bk:'Backoffice'};
+let activeTab = 'auto';
+
+// Tab groups: tab -> {sectionId: [radioNames]}
+const GROUPS = {
+  auto: {
+    'auto_s1': ['auto_s1_q1','auto_s1_q2','auto_s1_q3','auto_s1_q4','auto_s1_q5','auto_s1_q6'],
+    'auto_s2': ['auto_s2_q1','auto_s2_q2','auto_s2_q3','auto_s2_q4'],
+    'auto_s3': ['auto_s3_q1','auto_s3_q2','auto_s3_q3','auto_s3_q4','auto_s3_q5'],
+    'auto_s4': ['auto_s4_q1','auto_s4_q2','auto_s4_q3','auto_s4_q4','auto_s4_q5'],
+  },
+  choma: {
+    'choma_s1': ['choma_s1_q1','choma_s1_q2','choma_s1_q3','choma_s1_q4','choma_s1_q5','choma_s1_q6'],
+    'choma_s2': ['choma_s2_q1','choma_s2_q2','choma_s2_q3','choma_s2_q4'],
+    'choma_s3': ['choma_s3_q1','choma_s3_q2','choma_s3_q3','choma_s3_q4'],
+    'choma_s4': ['choma_s4_q1','choma_s4_q2','choma_s4_q3','choma_s4_q4','choma_s4_q5','choma_s4_q6'],
+  },
+  emf: {
+    'emf_s1': ['emf_s1_q1','emf_s1_q2','emf_s1_q3','emf_s1_q4','emf_s1_q5','emf_s1_q6'],
+    'emf_s2': ['emf_s2_q1','emf_s2_q2','emf_s2_q3','emf_s2_q4'],
+    'emf_s3': ['emf_s3_q1','emf_s3_q2','emf_s3_q3','emf_s3_q4','emf_s3_q5'],
+    'emf_s4': ['emf_s4_q1','emf_s4_q2','emf_s4_q3','emf_s4_q4','emf_s4_q5'],
+  },
+  kat: {
+    'kat_s1': ['kat_s1_q1','kat_s1_q2','kat_s1_q3','kat_s1_q4','kat_s1_q5','kat_s1_q6','kat_s1_q7'],
+    'kat_s2': ['kat_s2_q1','kat_s2_q2','kat_s2_q3','kat_s2_q4'],
+    'kat_s3': ['kat_s3_q1','kat_s3_q2','kat_s3_q3','kat_s3_q4','kat_s3_q5','kat_s3_q6'],
+    'kat_s4': ['kat_s4_q1','kat_s4_q2','kat_s4_q3','kat_s4_q4','kat_s4_q5','kat_s4_q6'],
+  },
+  bk: {
+    'bk_s1': ['bk_s1_q1','bk_s1_q2','bk_s1_q3','bk_s1_q4','bk_s1_q5','bk_s1_q6'],
+    'bk_s2': ['bk_s2_q1','bk_s2_q2','bk_s2_q3','bk_s2_q4','bk_s2_q5'],
+    'bk_s3': ['bk_s3_q1','bk_s3_q2','bk_s3_q3','bk_s3_q4','bk_s3_q5','bk_s3_q6'],
+    'bk_s4': ['bk_s4_q1','bk_s4_q2','bk_s4_q3','bk_s4_q4','bk_s4_q5','bk_s4_q6'],
+    'bk_s5': ['bk_s5_q1','bk_s5_q2','bk_s5_q3','bk_s5_q4'],
+  },
+  kol: {
+    'kol_s1': ['kol_s1_q1','kol_s1_q2','kol_s1_q3','kol_s1_q4','kol_s1_q5','kol_s1_q6','kol_s1_q7'],
+    'kol_s2': ['kol_s2_q1','kol_s2_q2','kol_s2_q3','kol_s2_q4'],
+    'kol_s3': ['kol_s3_q1','kol_s3_q2','kol_s3_q3','kol_s3_q4','kol_s3_q5'],
+    'kol_s4': ['kol_s4_q1','kol_s4_q2','kol_s4_q3','kol_s4_q4','kol_s4_q5'],
+  },
+};
+
+function switchTab(tab) {
+  activeTab = tab;
+  TABS.forEach(t => {
+    document.querySelector(`.tab-btn[data-tab=${t}]`).classList.toggle('active', t===tab);
+    document.getElementById(`panel-${t}`).classList.toggle('active', t===tab);
+  });
+  document.getElementById('footer-stage').textContent = 'Στάδιο: ' + STAGE_NAMES[tab];
+  updateScores(tab);
+}
+
+function getScore(names) {
+  let sum=0, count=0;
+  for (const n of names) {
+    const c = document.querySelector(`input[name="${n}"]:checked`);
+    if (c) { sum += parseInt(c.value); count++; }
+  }
+  return {sum, count};
+}
+
+function updateScores(tab) {
+  const groups = GROUPS[tab];
+  let total=0, allDone=true;
+  for (const [secId, names] of Object.entries(groups)) {
+    const {sum,count} = getScore(names);
+    const max = names.length * 5;
+    const hasAny = count > 0;
+    const valEl = document.getElementById(`s-${tab}-${secId}`);
+    const badgeEl = document.getElementById(`bs-${secId}`);
+    if (valEl) valEl.textContent = hasAny ? sum : '—';
+    if (badgeEl) badgeEl.textContent = hasAny ? `${sum} / ${max}` : `— / ${max}`;
+    if (hasAny) total += sum; else allDone = false;
+  }
+  const totalEl = document.getElementById(`s-${tab}-total`);
+  if (totalEl) totalEl.textContent = allDone ? total : (total>0 ? total+'+' : '—');
+
+  // auto perf band (percentage-based)
+  if (!allDone) return;
+  const maxTotal = Object.values(groups).reduce((a,v)=>a+v.length*5,0);
+  const pct = total/maxTotal*100;
+  const bands = [
+    {id:'perf1',max:39},{id:'perf2',max:59},{id:'perf3',max:74},
+    {id:'perf4',max:89},{id:'perf5',max:100},
+  ];
+  const panel = document.getElementById(`panel-${tab}`);
+  for (const b of bands) {
+    if (pct <= b.max) {
+      const r = panel.querySelector(`#${b.id}`);
+      if (r) r.checked = true;
+      break;
+    }
+  }
+}
+
+document.querySelectorAll('input[type=radio]').forEach(r => {
+  r.addEventListener('change', () => {
+    const panel = r.closest('.tab-panel');
+    if (panel) {
+      const tab = panel.id.replace('panel-','');
+      updateScores(tab);
+    }
+  });
+});
+
+function resetForm() {
+  if (!confirm('Να διαγραφούν όλα τα στοιχεία για νέα αξιολόγηση;')) return;
+  ['field-date','field-name','field-role','field-area','field-eval','field-period']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked=false);
+  document.querySelectorAll('.obs-cell input[type=text]').forEach(i => i.value='');
+  document.querySelectorAll('textarea').forEach(t => t.value='');
+  TABS.forEach(tab => {
+    const groups = GROUPS[tab];
+    for (const [secId, names] of Object.entries(groups)) {
+      const max = names.length*5;
+      const v=document.getElementById(`s-${tab}-${secId}`); if(v) v.textContent='—';
+      const b=document.getElementById(`bs-${secId}`); if(b) b.textContent=`— / ${max}`;
+    }
+    const t=document.getElementById(`s-${tab}-total`); if(t) t.textContent='—';
+  });
+}
+
+function saveAsPDF() {
+  const name = document.getElementById('field-name').value.trim() || 'Αγνωστος';
+  const stage = STAGE_NAMES[activeTab];
+  const dateRaw = document.getElementById('field-date').value;
+  let dateStr='';
+  if (dateRaw) { const [y,m,d]=dateRaw.split('-'); dateStr=d+'-'+m+'-'+y; }
+  else { const n=new Date(); dateStr=String(n.getDate()).padStart(2,'0')+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+n.getFullYear(); }
+  const orig = document.title;
+  document.title = `Αξιολόγηση ${name} ${stage} ${dateStr}`;
+  window.print();
+  setTimeout(()=>{ document.title=orig; },2000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+name = "optikitec-portal"
+compatibility_date = "2024-09-23"
+main = "src/index.js"
+
+[assets]
+directory = "./"
+not_found_handling = "404-page"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "TECHNICIAN_AUTH"
+id = "dca4f7a233554a9d9b7905dc416dda50"
+
+# Αποθήκευση συνημμένων (PDF/Word) για το tab "Ενημερώσεις/Οδηγίες" — KV αντί
+# για R2 γιατί το R2 δεν είναι ενεργοποιημένο στο Cloudflare account (χρειάζεται
+# χειροκίνητη ενεργοποίηση από το Dashboard). Τιμές έως 25MiB, αρκετό για
+# τυπικά PDF/Word οδηγιών. Βλ. src/announcements.js.
+[[kv_namespaces]]
+binding = "ANNOUNCEMENTS_FILES"
+id = "a1e61ef3692943cdb7bf7d89dcd0eeba"
+
+# Αποθήκευση δικαιολογητικού (PDF) αναρρωτικής άδειας — ίδιο μοτίβο/όριο με
+# ANNOUNCEMENTS_FILES παραπάνω, ξεχωριστό namespace. Βλ. src/leaves.js
+# (uploadLeaveAttachment/getLeaveAttachmentById).
+[[kv_namespaces]]
+binding = "LEAVE_FILES"
+id = "9856a0c0607f4bdf825410830c0f3335"
+
+# Αποθήκευση συνημμένων τεχνικού (βιογραφικό, ταυτότητα/διαβατήριο, άδεια
+# διαμονής) — ίδιο μοτίβο/όριο με τα παραπάνω, ξεχωριστό namespace. Βλ.
+# src/leaves.js (uploadEmployeeDocument/getEmployeeDocument). Πρόσβαση
+# μόνο TL+Director (requireTeamLeader στο src/index.js) — ρητή απόφαση
+# χρήστη λόγω ευαισθησίας δεδομένων.
+[[kv_namespaces]]
+binding = "EMPLOYEE_FILES"
+id = "114a16a9a00842fb9d60c5ed5ecc9bf2"
+
+# Αποθήκευση φωτογραφιών παραλαβής οχήματος (πολλαπλές ανά χρέωση) και
+# συνημμένου συμβάντος ατυχήματος — ίδιο μοτίβο/όριο με τα παραπάνω,
+# ξεχωριστό namespace. Βλ. src/assignments.js (uploadVehiclePickupPhoto)
+# και src/fleet.js (reportVehicleAccident/uploadAccidentAttachment).
+[[kv_namespaces]]
+binding = "FLEET_FILES"
+id = "f15ebc6278704093833152da77fdfb99"
+
+# Αποθήκευση εικόνας ψηφιακής υπογραφής (canvas PNG) στο έγγραφο παράδοσης/
+# παραλαβής — ίδιο μοτίβο/όριο με τα παραπάνω, ξεχωριστό namespace. Βλ.
+# src/handover.js (signHandoverDocument/getHandoverSignature).
+[[kv_namespaces]]
+binding = "HANDOVER_FILES"
+id = "571c43285ea643ebbc5b5a8310644391"
+
+# Καθημερινό backup (στιγμιότυπο JSON) όλων των φύλλων του Google Sheet —
+# ρητή απαίτηση χρήστη (15/08/2026), βλ. src/backup.js. Κρατάει τελευταία 14
+# backups (αυτόματο pruning μετά από κάθε νέο). ΔΕΝ είναι πραγματικό
+# αντίγραφο Google Sheet (θα χρειαζόταν Drive API scope) — raw δεδομένα σε
+# JSON, λήψη/restore χειροκίνητα αν χρειαστεί ποτέ.
+[[kv_namespaces]]
+binding = "SHEET_BACKUPS"
+id = "2ae3967bc16f40058656f52e60a3d61f"
+
+# Εβδομαδιαία (κάθε Δευτέρα 06:00 UTC) + μηνιαία (1η κάθε μήνα 06:00 UTC)
+# email αναφορά ανά Team Leader, ημερήσια σύνοψη χρεώσεων στις "0 16 * * *"
+# (16:00 UTC), καθημερινό backup του Sheet στις "0 3 * * *" (03:00 UTC,
+# off-peak), ΚΑΙ καθημερινή δημοσίευση ετεροχρονισμένων ερωτημάτων
+# διαθεσιμότητας στις "0 5 * * *" (05:00 UTC, 20/08/2026) — βλ. scheduled()
+# στο src/index.js + src/reports.js/src/backup.js/src/availability.js.
+# Μπλοκάρει σιωπηλά (no-op) μέχρι να μπουν τα EMAIL_RELAY_URL/EMAIL_RELAY_SECRET
+# secrets (ΔΕΝ αφορά το backup — αυτό δεν χρειάζεται email, τρέχει ανεξάρτητα).
+#
+# Σημείωση ώρας (ημερήσια χρεώσεων): 16:00 UTC = 19:00 Αθήνας ΜΟΝΟ το καλοκαίρι
+# (EEST, UTC+3). Το χειμώνα (EET, UTC+2) θα τρέξει στις 18:00 Αθήνας αντί για
+# 19:00 — τα Cron Triggers του Cloudflare δεν έχουν DST-aware timezone επιλογή,
+# ίδιος περιορισμός/αποδεκτό ρίσκο με τα weekly/monthly crons παραπάνω. Το ίδιο
+# ισχύει και για το "0 5 * * *" — δεν πειράζει, η ακρίβεια δημοσίευσης είναι
+# σκόπιμα σε επίπεδο ημέρας, όχι ώρας (ρητή απόφαση χρήστη).
+[triggers]
+crons = ["0 6 * * 1", "0 6 1 * *", "0 16 * * *", "0 3 * * *", "0 5 * * *"]
+
+# Secrets (SET VIA `wrangler secret put`, ΟΧΙ εδώ):
+#   LINK_SECRET                  -> ίδιο string με το LINK_SECRET στο Code.gs (legacy, integration token)
+#   SESSION_SECRET                -> για την υπογραφή του session cookie των τεχνικών
+#   ADMIN_SECRET                  -> για /api/admin/set-pin (seed PINs τεχνικών)
+#
+# Google Sheets API μέσω Workload Identity Federation (χωρίς service account key):
+#   WIF_PRIVATE_KEY               -> δικό μας RSA private key (PEM), ΟΧΙ Google-issued
+#   WIF_PROVIDER_RESOURCE          -> π.χ. projects/123456789/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider
+#   GOOGLE_SERVICE_ACCOUNT_EMAIL   -> service account που γίνεται impersonate (Editor στο Sheet)
+#   GOOGLE_SHEET_ID                -> το ID του spreadsheet από το URL
+#
+# Βλ. SETUP.md για αναλυτικές οδηγίες Workload Identity Pool/Provider setup.
