@@ -1,4 +1,4 @@
-# OptikiTec — Σύστημα Αδειών: Οδηγός Εγκατάστασης
+# Demo — Σύστημα Αδειών: Οδηγός Εγκατάστασης
 
 Αρχιτεκτονική: Cloudflare Worker (login, hub UI, όλη η business logic) μιλάει
 απευθείας με ένα Google Sheet μέσω Sheets API v4. Δεν υπάρχει Apps Script —
@@ -17,9 +17,9 @@
 ### Φύλλο: `Υπάλληλοι`
 | EmployeeID | Name | Email | TeamLeaderEmail | AnnualDays | Team | HasDrivingLicense |
 |---|---|---|---|---|---|---|
-| ikalafatas | Καλαφάτας Ιωάννης | | nikos@optikitec.gr | 22 | Πάτρα | Ναι |
+| ikalafatas | Καλαφάτας Ιωάννης | | nikos@demo.gr | 22 | Πάτρα | Ναι |
 
-Μία γραμμή ανά τεχνικό. `EmployeeID` πρέπει να ταιριάζει με αυτό που χρησιμοποιείς στο `/api/admin/set-pin` (βλ. §2.2). `Email` είναι προαιρετικό για τεχνικούς (login γίνεται με PIN, όχι email) — αλλά αν κάποιος TL/backoffice θέλει να βλέπει *τη δική του* άδεια μέσα από το Portal, χρειάζεται μία γραμμή εδώ με το πραγματικό του `@optikitec.gr` email.
+Μία γραμμή ανά τεχνικό. `EmployeeID` πρέπει να ταιριάζει με αυτό που χρησιμοποιείς στο `/api/admin/set-pin` (βλ. §2.2). `Email` είναι προαιρετικό για τεχνικούς (login γίνεται με PIN, όχι email) — αλλά αν κάποιος TL/backoffice θέλει να βλέπει *τη δική του* άδεια μέσα από το Portal, χρειάζεται μία γραμμή εδώ με το πραγματικό του `@demo.gr` email.
 
 **ΣΗΜΑΝΤΙΚΟ — χειροκίνητο βήμα:** πρόσθεσε επικεφαλίδη `HasDrivingLicense` στο τέλος (νέα στήλη) — τιμές `Ναι`/`Όχι`, γράφεται αυτόματα από τη φόρμα "Νέος Τεχνικός". Απλό Ναι/Όχι πεδίο, χωρίς παρακολούθηση λήξης (ρητή απαίτηση χρήστη — δεν χρειάζεται τέτοιο tracking). Χωρίς αυτή τη στήλη, η τιμή απλά δεν αποθηκεύεται πουθενά — καμία διακοπή λειτουργίας.
 
@@ -31,7 +31,7 @@
 ### Φύλλο: `TeamLeaders`
 | Name | Email | Team | BackupEmail | Away |
 |---|---|---|---|---|
-| Νίκος Κωνσταντίνου | nikos@optikitec.gr | Πάτρα/Αίγιο | | FALSE |
+| Νίκος Κωνσταντίνου | nikos@demo.gr | Πάτρα/Αίγιο | | FALSE |
 
 **ΣΗΜΑΝΤΙΚΟ — χειροκίνητο βήμα:** οι στήλες `BackupEmail` και `Away` είναι
 για το backup TL feature (δεύτερος TL ανά τεχνικό, ενεργός μόνο όταν λείπει ο
@@ -52,7 +52,7 @@
 ### Φύλλο: `Backoffice`
 | Name | Email |
 |---|---|
-| Στάθης Χρόνης | s.xronis@optikitec.gr |
+| Στάθης Χρόνης | s.xronis@demo.gr |
 
 Όποιος είναι εδώ μπαίνει με τον εταιρικό του Google λογαριασμό και παίρνει
 ρόλο **Backoffice**. Ο ρόλος καθορίζεται αυτόματα: αν το email υπάρχει στο
@@ -237,7 +237,7 @@ Google Workspace — άνετο για τον όγκο του portal.
 ### 2.2 Seed PIN για κάθε τεχνικό (KV: TECHNICIAN_AUTH)
 
 ```bash
-curl -X POST https://optikitec-portal.s-xronis.workers.dev/api/admin/set-pin \
+curl -X POST https://demo-portal.s-xronis.workers.dev/api/admin/set-pin \
   -H "X-Admin-Secret: <ADMIN_SECRET από 2.1>" \
   -H "Content-Type: application/json" \
   -d '{"employeeId":"ikalafatas","pin":"1234","name":"Καλαφάτας Ιωάννης"}'
@@ -247,17 +247,17 @@ curl -X POST https://optikitec-portal.s-xronis.workers.dev/api/admin/set-pin \
 
 ### 2.3 Cloudflare Access (Zero Trust) — Google SSO για TL/Backoffice
 
-1. Cloudflare dashboard → **Zero Trust** → **Access** → **Applications** → η εφαρμογή `optikitec-portal`
+1. Cloudflare dashboard → **Zero Trust** → **Access** → **Applications** → η εφαρμογή `demo-portal`
 2. **Destinations** (μέγιστο 5 ανά εφαρμογή):
-   - `optikitec-portal.s-xronis.workers.dev/api/leaves/team`
-   - `optikitec-portal.s-xronis.workers.dev/api/leaves/decide`
-   - `optikitec-portal.s-xronis.workers.dev/api/leaves/submit-for-team`
-   - `optikitec-portal.s-xronis.workers.dev/api/fleet/*` (καλύπτει list/add/update/delete)
-   - `optikitec-portal.s-xronis.workers.dev/api/auth/staff-login` — **κρίσιμο**: αυτό είναι το path που φορτώνει το κουμπί "Σύνδεση με Google" στο `index.html`, για να αναγκάζει το Access να ζητήσει Google login πριν κάνει redirect στο `/hub` (το `/hub` δεν είναι πλέον προστατευμένο, ώστε να το βλέπουν και οι τεχνικοί)
+   - `demo-portal.s-xronis.workers.dev/api/leaves/team`
+   - `demo-portal.s-xronis.workers.dev/api/leaves/decide`
+   - `demo-portal.s-xronis.workers.dev/api/leaves/submit-for-team`
+   - `demo-portal.s-xronis.workers.dev/api/fleet/*` (καλύπτει list/add/update/delete)
+   - `demo-portal.s-xronis.workers.dev/api/auth/staff-login` — **κρίσιμο**: αυτό είναι το path που φορτώνει το κουμπί "Σύνδεση με Google" στο `index.html`, για να αναγκάζει το Access να ζητήσει Google login πριν κάνει redirect στο `/hub` (το `/hub` δεν είναι πλέον προστατευμένο, ώστε να το βλέπουν και οι τεχνικοί)
 
    Το `api/integration-token` (legacy) δεν χωράει πια στο όριο των 5 — αφαίρεσέ το αν υπάρχει, δεν χρησιμοποιείται.
 3. **Identity providers**: Google (χρειάζεται Google OAuth client — Zero Trust → Settings → Authentication)
-4. **Policy**: Include → Emails ending in → `@optikitec.gr`
+4. **Policy**: Include → Emails ending in → `@demo.gr`
 5. Save.
 
 **Σημαντικό**: το `/hub`, το `/`, και τα κοινά endpoints (`/api/whoami`, `/api/leaves/my`, `/api/leaves/submit`, `/api/auth/logout`) ΔΕΝ πρέπει να είναι Access-protected destinations — τα χρειάζονται και οι τεχνικοί (χωρίς Google Workspace λογαριασμό), και η δική τους ασφάλεια γίνεται ήδη μέσα στον Worker κώδικα (session cookie ή `Cf-Access-Authenticated-User-Email` header, ό,τι υπάρχει — βλ. `resolveIdentity` στο `src/index.js`). Αν προστατέψεις αυτά τα paths, οι τεχνικοί θα βλέπουν το Google login gate και δεν θα μπορούν να μπουν καθόλου.
@@ -283,7 +283,7 @@ npx wrangler deploy
 
 Πολύ λιγότερα βήματα από το WIF παρακάτω — κατάλληλο ΜΟΝΟ αν το Google Cloud
 project σου ΔΕΝ έχει org policy που μπλοκάρει service account keys (το
-production OptikiTec project έχει τέτοιο policy, γι' αυτό εκεί χρησιμοποιείται
+production Demo project έχει τέτοιο policy, γι' αυτό εκεί χρησιμοποιείται
 το WIF (Α) — ένα καινούριο/προσωπικό project συνήθως δεν έχει αυτόν τον
 περιορισμό).
 
@@ -319,10 +319,10 @@ service account key), και η Google Cloud STS το ανταλλάσσει γ�
 ### 3.1 Service Account (χωρίς key)
 
 1. GCP Console → **IAM & Admin → Service Accounts → Create Service Account**
-2. Όνομα π.χ. `optikitec-portal-sheets` → Create and Continue → Done
+2. Όνομα π.χ. `demo-portal-sheets` → Create and Continue → Done
    (**ΜΗΝ** φτιάξεις JSON key)
 3. Άνοιξε το Sheet → **Share** → πρόσθεσε το email του service account
-   (π.χ. `optikitec-portal-sheets@<project-id>.iam.gserviceaccount.com`) → **Editor**
+   (π.χ. `demo-portal-sheets@<project-id>.iam.gserviceaccount.com`) → **Editor**
 
 ### 3.2 Enable APIs
 
@@ -333,21 +333,21 @@ GCP Console → **APIs & Services → Library** → ενεργοποίησε:
 
 ### 3.3 Workload Identity Pool + Provider
 
-1. **IAM & Admin → Workload Identity Federation → Create Pool** (π.χ. `optikitec-portal-pool`)
-2. **Add provider**: Type **OpenID Connect (OIDC)**, name `optikitec-portal-provider`,
-   Issuer `https://optikitec-portal.s-xronis.workers.dev`, Audiences: Default
+1. **IAM & Admin → Workload Identity Federation → Create Pool** (π.χ. `demo-portal-pool`)
+2. **Add provider**: Type **OpenID Connect (OIDC)**, name `demo-portal-provider`,
+   Issuer `https://demo-portal.s-xronis.workers.dev`, Audiences: Default
 3. **Attribute mapping**: `google.subject = assertion.sub`
 4. Save, σημείωσε το πλήρες resource name:
    ```
-   projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider
+   projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/demo-portal-pool/providers/demo-portal-provider
    ```
 
 ### 3.4 Δικαίωμα impersonation
 
-Service account (`optikitec-portal-sheets`) → **Permissions with access** →
+Service account (`demo-portal-sheets`) → **Permissions with access** →
 **Grant Access** → New principal:
 ```
-principal://iam.googleapis.com/projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/optikitec-portal-pool/subject/optikitec-portal-worker
+principal://iam.googleapis.com/projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/demo-portal-pool/subject/demo-portal-worker
 ```
 Ρόλος: **Workload Identity User**
 
@@ -358,10 +358,10 @@ npx wrangler secret put WIF_PRIVATE_KEY
 # PEM private key (δικό μας keypair, ΟΧΙ Google key)
 
 npx wrangler secret put WIF_PROVIDER_RESOURCE
-# projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider
+# projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/demo-portal-pool/providers/demo-portal-provider
 
 npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_EMAIL
-# optikitec-portal-sheets@<project-id>.iam.gserviceaccount.com
+# demo-portal-sheets@<project-id>.iam.gserviceaccount.com
 
 npx wrangler secret put GOOGLE_SHEET_ID
 # το ID από το URL: https://docs.google.com/spreadsheets/d/<ΑΥΤΟ>/edit
@@ -370,8 +370,8 @@ npx wrangler secret put GOOGLE_SHEET_ID
 ### 3.6 Έλεγχος
 
 ```bash
-curl https://optikitec-portal.s-xronis.workers.dev/.well-known/openid-configuration
-curl https://optikitec-portal.s-xronis.workers.dev/.well-known/jwks.json
+curl https://demo-portal.s-xronis.workers.dev/.well-known/openid-configuration
+curl https://demo-portal.s-xronis.workers.dev/.well-known/jwks.json
 ```
 
 Πρέπει να επιστρέφουν JSON — αυτά τα διαβάζει η Google για να επαληθεύσει τα

@@ -1,6 +1,6 @@
 > **Κλώνος/demo** — αντίγραφο του Demo Portal για δοκιμές/πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet. Δεν έχει ακόμα δικό του deployment/Sheet/secrets — βλ. SETUP.md.
 
-# OptikiTec — Σύστημα Αδειών (Portal)
+# Demo — Σύστημα Αδειών (Portal)
 
 Cloudflare Worker: login (τεχνικοί με PIN, TL/backoffice με Google SSO), hub UI,
 και όλη η business logic των αδειών. Μιλάει απευθείας με ένα Google Sheet
@@ -26,7 +26,7 @@ Cloudflare Worker: login (τεχνικοί με PIN, TL/backoffice με Google S
 **Τεχνικοί** (δεν έχουν όλοι Google Workspace): employeeID + 4ψήφιο PIN →
 session cookie (HMAC signed) μέσω `TECHNICIAN_AUTH` KV namespace.
 
-**Team Leaders / Backoffice** (έχουν `@optikitec.gr` Workspace): Cloudflare
+**Team Leaders / Backoffice** (έχουν `@demo.gr` Workspace): Cloudflare
 Access (Zero Trust) με Google SSO, μόνο στα staff-only endpoints
 (`/api/leaves/team`, `/decide`, `/submit-for-team`) — βλ. `SETUP.md` §2.3
 για το γιατί η σελίδα/κοινά endpoints ΔΕΝ πρέπει να προστατεύονται εκεί.

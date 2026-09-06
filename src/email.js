@@ -3,7 +3,7 @@
  * ("Email Relay") που κάνει μόνο MailApp.sendEmail() — καμία σχέση με
  * Sheets/auth/business logic, αυτά παραμένουν 100% στον Worker. Επιλέχτηκε
  * αντί για SendGrid: καμία εγγραφή σε τρίτο πάροχο, στέλνει από πραγματικό
- * Google account (π.χ. Google Workspace του optikitec.gr αν υπάρχει), όριο
+ * Google account (π.χ. Google Workspace του demo.gr αν υπάρχει), όριο
  * 100-1500 emails/ημέρα (αρκετό για το portal). Βλ. apps-script/EmailRelay.gs
  * για τον κώδικα που μπαίνει στο Apps Script + SETUP.md για deployment.
  *
@@ -138,7 +138,7 @@ export async function resolveActorName(env, email) {
 }
 
 /** URL του live portal — για CTA κουμπιά μέσα στα emails */
-export const PORTAL_URL = "https://optikitec-portal.s-xronis.workers.dev";
+export const PORTAL_URL = "https://demo-portal.s-xronis.workers.dev";
 
 /** Χρώματα badge ανά κατηγορία ενέργειας (βλ. emailTemplate) */
 const BADGE_COLORS = {
@@ -148,7 +148,7 @@ const BADGE_COLORS = {
 };
 
 /**
- * HTML template email — ίδιο brand με το portal (wordmark "OptikiTec",
+ * HTML template email — ίδιο brand με το portal (wordmark "Demo",
  * accent μπλε #2E9BFF· άλλαξε από "Οπτική Τεχνική" στις 19/08/2026, ρητή
  * απαίτηση χρήστη — ταιριάζει με το branding σε sidebar/login/favicon). Table-based/inline styles παντού (όχι flexbox/grid/
  * custom fonts ως μόνη επιλογή) για συμβατότητα με Outlook/Gmail/Apple Mail.
@@ -189,7 +189,7 @@ export function emailTemplate({ badge, badgeColor = "blue", title, intro, rows, 
     <div style="padding:22px 26px 18px;border-bottom:3px solid #2E9BFF;">
       <table role="presentation" style="width:100%;border-collapse:collapse;">
         <tr>
-          <td style="vertical-align:middle;"><span style="font-family:Arial,sans-serif;font-weight:800;font-size:16px;color:#0F1A2E;letter-spacing:0.01em;">OptikiTec</span></td>
+          <td style="vertical-align:middle;"><span style="font-family:Arial,sans-serif;font-weight:800;font-size:16px;color:#0F1A2E;letter-spacing:0.01em;">Demo</span></td>
           ${badgeHtml}
         </tr>
       </table>

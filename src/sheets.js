@@ -8,7 +8,7 @@
  * Google Cloud STS το ανταλλάσσει για ένα federated token, και μετά
  * γίνεται impersonation του πραγματικού service account (IAM Credentials
  * API) για να πάρουμε access token με scope Sheets. Γιατί έτσι στο ΚΥΡΙΟ
- * (production) OptikiTec deployment: η εταιρεία έχει org policy που
+ * (production) Demo deployment: η εταιρεία έχει org policy που
  * μπλοκάρει τη δημιουργία Google-issued service account keys
  * (iam.disableServiceAccountKeyCreation, legacy + managed) και δεν θέλαμε
  * να το πειράξουμε. Το WIF flow δεν δημιουργεί ΚΑΝΕΝΑ Google service
@@ -27,8 +27,8 @@
  *
  * Χρειάζεται 3 Worker secrets ΓΙΑ ΤΟ (Α) (βλ. SETUP.md), Ή 1 secret ΓΙΑ ΤΟ (Β):
  *   WIF_PRIVATE_KEY            (πλήρες PEM, δικό μας keypair — ΟΧΙ Google key)
- *   WIF_PROVIDER_RESOURCE      (π.χ. projects/123456789/locations/global/workloadIdentityPools/optikitec-portal-pool/providers/optikitec-portal-provider)
- *   GOOGLE_SERVICE_ACCOUNT_EMAIL (το service account που κάνουμε impersonate, π.χ. optikitec-portal-sheets@optikitec-portal.iam.gserviceaccount.com)
+ *   WIF_PROVIDER_RESOURCE      (π.χ. projects/123456789/locations/global/workloadIdentityPools/demo-portal-pool/providers/demo-portal-provider)
+ *   GOOGLE_SERVICE_ACCOUNT_EMAIL (το service account που κάνουμε impersonate, π.χ. demo-portal-sheets@demo-portal.iam.gserviceaccount.com)
  *   GOOGLE_SHEET_ID             (το ID του spreadsheet από το URL)
  *
  * Το Worker εκθέτει δημόσια (χωρίς auth) 2 endpoints ώστε η Google να
@@ -38,8 +38,8 @@
  * (βλ. index.js — καλούν getOidcDiscoveryJson/getJwksJson από εδώ)
  */
 
-const ISSUER = "https://optikitec-portal.s-xronis.workers.dev";
-const WIF_SUBJECT = "optikitec-portal-worker";
+const ISSUER = "https://demo-portal.s-xronis.workers.dev";
+const WIF_SUBJECT = "demo-portal-worker";
 const WIF_KID = "wif-key-1";
 
 // Public RSA modulus/exponent του δικού μας WIF keypair (ασφαλές να είναι

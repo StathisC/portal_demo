@@ -170,7 +170,7 @@ import { createSheetBackup, listSheetBackups, getSheetBackupRaw } from "./backup
 import { sendEmail, emailTemplate, PORTAL_URL, logEmailFailure } from "./email.js";
 import { signPayload, verifyPayload } from "./tokens.js";
 
-const SESSION_COOKIE = "optikitec_session";
+const SESSION_COOKIE = "demo_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 10; // 10 ώρες
 const INTEGRATION_TOKEN_TTL_SECONDS = 60 * 60 * 8; // 8 ώρες - καλύπτει ολόκληρη συνεδρία TL/backoffice dashboard, χρησιμοποιείται και για re-verification σε write actions, όχι μόνο στο αρχικό redirect
 
@@ -1754,7 +1754,7 @@ async function handleBackupDownload(request, env, params) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Content-Disposition": `attachment; filename="optikitec-backup-${date}.json"`,
+        "Content-Disposition": `attachment; filename="demo-backup-${date}.json"`,
       },
     });
   } catch (err) {
@@ -1811,7 +1811,7 @@ async function requireTeamLeaderOrBackoffice(request, env) {
  * για κάθε Director. Το server-side check εδώ είναι η πραγματική προστασία·
  * το client-side hide στο hub.html είναι απλά UX, όχι ασφάλεια.
  */
-const BULK_WELCOME_OWNER_EMAIL = "s.xronis@optikitec.gr";
+const BULK_WELCOME_OWNER_EMAIL = "s.xronis@demo.gr";
 
 async function requireBulkWelcomeOwner(request, env) {
   const identity = await resolveIdentity(request, env);
