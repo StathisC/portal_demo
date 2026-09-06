@@ -137,7 +137,7 @@ export async function createHandoverDocument(env, { employeeId, createdBy }) {
         ],
         ctaText: "Υπογραφή στο Portal",
         ctaUrl: `${PORTAL_URL}/hub`,
-        footer: "Βρίσκεις το έγγραφο στο tab «Στην Κατοχή μου» του OptikiTec Portal.",
+        footer: "Βρίσκεις το έγγραφο στο tab «Στην Κατοχή μου» του Demo Portal.",
       }),
       replyTo: createdBy,
       replyToName: createdByName,

@@ -1,4 +1,4 @@
-> **ΣΗΜΕΙΩΣΗ — αυτό είναι ΚΛΩΝΟΣ/demo repo** (δημιουργήθηκε 06/09/2026 από το πραγματικό `optikitec-portal` repo, για πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet). Το υπόλοιπο περιεχόμενο αυτού του αρχείου περιγράφει την ιστορία/αποφάσεις του ΠΡΩΤΟΤΥΠΟΥ OptikiTec Portal — παραμένει ακριβές ως προς ΤΟΝ ΚΩΔΙΚΑ (ίδιο codebase τη στιγμή του clone), αλλά το live URL, τα Cloudflare/Google Sheet secrets, και τα «Χειροκίνητα βήματα» ΔΕΝ έχουν ακόμα γίνει σε αυτό το demo — χρειάζεται δικό του πλήρες setup (βλ. SETUP.md).
+> **ΣΗΜΕΙΩΣΗ — αυτό είναι ΚΛΩΝΟΣ/demo repo** (δημιουργήθηκε 06/09/2026 από το πραγματικό `optikitec-portal` repo, για πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet). Το υπόλοιπο περιεχόμενο αυτού του αρχείου περιγράφει την ιστορία/αποφάσεις του ΠΡΩΤΟΤΥΠΟΥ Demo Portal — παραμένει ακριβές ως προς ΤΟΝ ΚΩΔΙΚΑ (ίδιο codebase τη στιγμή του clone), αλλά το live URL, τα Cloudflare/Google Sheet secrets, και τα «Χειροκίνητα βήματα» ΔΕΝ έχουν ακόμα γίνει σε αυτό το demo — χρειάζεται δικό του πλήρες setup (βλ. SETUP.md).
 
 ---
 
@@ -20,7 +20,7 @@ AuditLog) και τη σωστή σειρά επικεφαλίδων σε κάθ
 (source of truth, όχι από ενδεχομένως ξεπερασμένο prose), ΟΧΙ από το SETUP.md
 του production repo. Το `.xlsx` που παρήγαγε το script (`scripts/portal-demo-sheet-bootstrap.xlsx`)
 ανέβηκε ήδη στο Google Drive του χρήστη (`s.xronis@optikitec.gr`) ως
-"OptikiTec Portal DEMO — Sheet (bootstrap, ανοίξτε με Google Sheets).xlsx".
+"Demo Portal DEMO — Sheet (bootstrap, ανοίξτε με Google Sheets).xlsx".
 **Εναπομένον χειροκίνητο βήμα (ο χρήστης):** άνοιγμα του αρχείου στο Google
 Drive → δεξί κλικ (ή Αρχείο) → «Άνοιγμα με» → Google Sheets (η αυτόματη
 μετατροπή μέσω του Google Drive MCP connector `create_file` απέτυχε με
@@ -34,7 +34,7 @@ secret, και μοίρασμα (Share) του Sheet με το email του serv
 
 ---
 
-# OptikiTec Portal — κατάσταση έργου
+# Demo Portal — κατάσταση έργου
 
 Σύστημα αδειών + στόλου + χρεώσεων για την OptikiTec (κατασκευές FTTH, ~40 τεχνικοί).
 Cloudflare Worker με Google Sheet ως data store. **Δεν υπάρχει Apps Script για το backend** (Sheets/auth/business logic) — αφαιρέθηκε πλήρως.
@@ -1088,7 +1088,7 @@ Service, μόνο τη στιγμή δημιουργίας νέου οχήματ
 2 καρτών οχημάτων στα δικά μας δεδομένα/CSS vars, εγκρίθηκε "ναι προχώρα"
 + 3 διευκρινιστικές ερωτήσεις): ο χρήστης ανέβασε ένα εξαγόμενο HTML ενός
 ξεχωριστού Dyad-generated React/Tailwind/shadcn demo app (fleet management
-για συνεργεία, ΔΕΝ είναι το OptikiTec portal — δικό του tab "Στόλος
+για συνεργεία, ΔΕΝ είναι το Demo Portal — δικό του tab "Στόλος
 Οχημάτων"/"Ιστορικό Συμβάντων", δικά του πλασματικά δεδομένα/πεδία όπως
 "Fuel: DIESEL"/"Συνεργείο Συγκολλήσεων A1") και ζήτησε να χτιστεί το ΔΙΚΟ
 ΜΑΣ tab Στόλος Οχημάτων με ΑΝΤΙΣΤΟΙΧΗ σχεδιαστική γλώσσα — κάρτες αντί για

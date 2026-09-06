@@ -15,7 +15,7 @@
     } catch (e) {}
   })();
 </script>
-<title>OptikiTec Portal</title>
+<title>Demo Portal</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap');
   :root{
@@ -1017,7 +1017,7 @@
         th{background:#f4f6f9;}
       </style></head><body>
       <h1>${escapeHtml(title)}</h1>
-      <p>${rows.length} εγγραφές · ${today} · OptikiTec Portal</p>
+      <p>${rows.length} εγγραφές · ${today} · Demo Portal</p>
       <table><thead><tr>${theadHtml}</tr></thead><tbody>${rowsHtml || `<tr><td colspan="${headers.length}">Καμία εγγραφή</td></tr>`}</tbody></table>
       </body></html>`);
     win.document.close();
@@ -1704,7 +1704,7 @@
         th{background:#f4f6f9;}
       </style></head><body>
       <h1>Άδειες — ${employeeName}</h1>
-      <p>Περίοδος: ${startDate ? fmtDate(startDate) : 'από πάντα'} – ${endDate ? fmtDate(endDate) : 'σήμερα'} · OptikiTec Portal</p>
+      <p>Περίοδος: ${startDate ? fmtDate(startDate) : 'από πάντα'} – ${endDate ? fmtDate(endDate) : 'σήμερα'} · Demo Portal</p>
       <table>
         <thead><tr><th>Περίοδος</th><th>Τύπος</th><th>Ημέρες</th><th>Κατάσταση</th><th>Σημείωση</th></tr></thead>
         <tbody>${rowsHtml || '<tr><td colspan="5">Καμία άδεια</td></tr>'}</tbody>
@@ -3068,7 +3068,7 @@
         .sig-line{border-top:1px solid #333; margin-top:48px; padding-top:6px; font-size:12.5px;}
       </style></head><body>
       <h1>Έγγραφο Παράδοσης / Παραλαβής</h1>
-      <p>Τεχνικός: <strong>${doc.EmployeeName}</strong> (${doc.EmployeeID}) · Δημιουργήθηκε: ${fmtDate(doc.CreatedAt)} από ${doc.CreatedByName || '—'} · Εκτυπώθηκε: ${today} · OptikiTec Portal</p>
+      <p>Τεχνικός: <strong>${doc.EmployeeName}</strong> (${doc.EmployeeID}) · Δημιουργήθηκε: ${fmtDate(doc.CreatedAt)} από ${doc.CreatedByName || '—'} · Εκτυπώθηκε: ${today} · Demo Portal</p>
       <table>
         <thead><tr><th>Είδος</th><th>Αντικείμενο</th><th>Ημ/νία χρέωσης</th></tr></thead>
         <tbody>${rowsHtml || '<tr><td colspan="3">Κανένα αντικείμενο</td></tr>'}</tbody>
@@ -3112,7 +3112,7 @@
         .sig-line{border-top:1px solid #333; margin-top:48px; padding-top:6px; font-size:12.5px;}
       </style></head><body>
       <h1>Δελτίο Παράδοσης / Παραλαβής Εξοπλισμού</h1>
-      <p>Τεχνικός: <strong>${employee.Name}</strong> (${employee.EmployeeID}) · Ημερομηνία: ${today} · OptikiTec Portal</p>
+      <p>Τεχνικός: <strong>${employee.Name}</strong> (${employee.EmployeeID}) · Ημερομηνία: ${today} · Demo Portal</p>
       <table>
         <thead><tr><th>Είδος</th><th>Αντικείμενο</th><th>Ημ/νία χρέωσης</th></tr></thead>
         <tbody>${rowsHtml || '<tr><td colspan="3">Κανένα αντικείμενο</td></tr>'}</tbody>

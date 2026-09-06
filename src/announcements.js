@@ -154,7 +154,7 @@ async function notifyAnnouncementTargets(env, row, teams) {
           rows: [["Τίτλος", row.Title]],
           ctaText: "Προβολή στο Portal",
           ctaUrl: `${PORTAL_URL}/hub`,
-          footer: "Δες την πλήρη ενημέρωση από το tab «Ενημερώσεις/Οδηγίες» του OptikiTec Portal.",
+          footer: "Δες την πλήρη ενημέρωση από το tab «Ενημερώσεις/Οδηγίες» του Demo Portal.",
         }),
         replyTo: row.PostedBy,
         replyToName: actorName,

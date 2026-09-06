@@ -198,7 +198,7 @@ async function notifyTargets(env, row, teams) {
           rows,
           ctaText: mode === "YESNO" ? "Απάντηση στο Portal" : "Προβολή στο Portal",
           ctaUrl: `${PORTAL_URL}/hub`,
-          footer: "Δες το από το tab «Ανακοινώσεις» του OptikiTec Portal.",
+          footer: "Δες το από το tab «Ανακοινώσεις» του Demo Portal.",
         }),
         replyTo: row.CreatedBy,
         replyToName: actorName,

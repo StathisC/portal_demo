@@ -1,4 +1,4 @@
-> **Κλώνος/demo** — αντίγραφο του OptikiTec Portal για δοκιμές/πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet. Δεν έχει ακόμα δικό του deployment/Sheet/secrets — βλ. SETUP.md.
+> **Κλώνος/demo** — αντίγραφο του Demo Portal για δοκιμές/πειραματισμό σε ξεχωριστό Cloudflare Worker + Google Sheet. Δεν έχει ακόμα δικό του deployment/Sheet/secrets — βλ. SETUP.md.
 
 # OptikiTec — Σύστημα Αδειών (Portal)
 

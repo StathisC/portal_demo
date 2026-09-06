@@ -1,5 +1,5 @@
 /**
- * OptikiTec Portal — Worker
+ * Demo Portal — Worker
  * Χειρίζεται:
  *   - /api/auth/technician   POST { employeeId, pin } -> session cookie
  *   - /api/auth/logout       POST -> καθαρίζει cookie
@@ -1103,7 +1103,7 @@ function decideLinkPage({ badge, badgeColor = "blue", heading, message, formToke
        </form>`
     : `<a href="${PORTAL_URL}/hub" style="display:inline-block;margin-top:22px;color:#2E9BFF;font-size:13px;font-weight:600;text-decoration:none;">Μετάβαση στο portal →</a>`;
 
-  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OptikiTec Portal</title></head>
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Demo Portal</title></head>
   <body style="margin:0;padding:40px 20px;background:#F4F6F9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
     <div style="max-width:440px;margin:0 auto;background:#ffffff;border:1px solid #E7EAF0;border-radius:12px;overflow:hidden;">
       <div style="padding:20px 26px;border-bottom:3px solid #2E9BFF;">
@@ -1373,11 +1373,11 @@ async function handleEmployeesCreate(request, env) {
       }
       emailResult = await sendEmail(env, {
         to: [employee.Email],
-        subject: "Τα στοιχεία σύνδεσής σου στο OptikiTec Portal",
+        subject: "Τα στοιχεία σύνδεσής σου στο Demo Portal",
         html: emailTemplate({
           badge: "Καλωσόρισμα",
           badgeColor: "green",
-          title: "Καλωσήρθες στο OptikiTec Portal",
+          title: "Καλωσήρθες στο Demo Portal",
           intro: `Δημιουργήθηκε λογαριασμός για εσένα, ${employee.Name}. Χρησιμοποίησε αυτά τα στοιχεία για να συνδεθείς.`,
           rows: welcomeRows,
           ctaText: "Σύνδεση στο Portal",
@@ -1523,7 +1523,7 @@ async function handleResetPin(request, env) {
       const actorName = leader.Name || leader.Email;
       emailResult = await sendEmail(env, {
         to: [employee.Email],
-        subject: "Νέος κωδικός σύνδεσης (PIN) — OptikiTec Portal",
+        subject: "Νέος κωδικός σύνδεσης (PIN) — Demo Portal",
         html: emailTemplate({
           badge: "Reset PIN",
           badgeColor: "blue",
@@ -3228,12 +3228,12 @@ async function handleBulkWelcomeTechnicians(request, env) {
 
       const emailResult = await sendEmail(env, {
         to: [emp.Email],
-        subject: "Τα στοιχεία σύνδεσής σου στο OptikiTec Portal",
+        subject: "Τα στοιχεία σύνδεσής σου στο Demo Portal",
         html: emailTemplate({
           badge: "Καλωσόρισμα",
           badgeColor: "green",
-          title: "Καλωσορίσατε στο OptikiTec Portal",
-          intro: "Ενεργοποιήθηκε ο λογαριασμός σας στο OptikiTec Portal, την πλατφόρμα διαχείρισης αδειών, στόλου και εξοπλισμού της εταιρείας. Μέσω αυτής μπορείτε να υποβάλλετε αιτήματα άδειας, να ενημερώνεστε για ό,τι έχει ανατεθεί στο όνομά σας, και να παρακολουθείτε τις ανακοινώσεις της εταιρείας. Χρησιμοποιήστε τα παρακάτω διαπιστευτήρια για την πρώτη σας σύνδεση.",
+          title: "Καλωσορίσατε στο Demo Portal",
+          intro: "Ενεργοποιήθηκε ο λογαριασμός σας στο Demo Portal, την πλατφόρμα διαχείρισης αδειών, στόλου και εξοπλισμού της εταιρείας. Μέσω αυτής μπορείτε να υποβάλλετε αιτήματα άδειας, να ενημερώνεστε για ό,τι έχει ανατεθεί στο όνομά σας, και να παρακολουθείτε τις ανακοινώσεις της εταιρείας. Χρησιμοποιήστε τα παρακάτω διαπιστευτήρια για την πρώτη σας σύνδεση.",
           rows: [
             ["Κωδικός υπαλλήλου", emp.EmployeeID],
             ["PIN", pin],
@@ -3320,12 +3320,12 @@ async function handleBulkWelcomeStaff(request, env) {
   for (const person of targets) {
     const emailResult = await sendEmail(env, {
       to: [person.email],
-      subject: "Καλωσόρισμα στο OptikiTec Portal",
+      subject: "Καλωσόρισμα στο Demo Portal",
       html: emailTemplate({
         badge: "Καλωσόρισμα",
         badgeColor: "green",
-        title: "Καλωσορίσατε στο OptikiTec Portal",
-        intro: "Έχετε πρόσβαση στο OptikiTec Portal, την πλατφόρμα διαχείρισης αδειών, στόλου οχημάτων, εξοπλισμού και προσωπικού της εταιρείας. Η σύνδεση γίνεται με τον εταιρικό σας λογαριασμό Google — δεν απαιτείται ξεχωριστός κωδικός πρόσβασης.",
+        title: "Καλωσορίσατε στο Demo Portal",
+        intro: "Έχετε πρόσβαση στο Demo Portal, την πλατφόρμα διαχείρισης αδειών, στόλου οχημάτων, εξοπλισμού και προσωπικού της εταιρείας. Η σύνδεση γίνεται με τον εταιρικό σας λογαριασμό Google — δεν απαιτείται ξεχωριστός κωδικός πρόσβασης.",
         ctaText: "Είσοδος στο Portal",
         ctaUrl: PORTAL_URL,
         footer: "Αν αντιμετωπίσετε πρόβλημα στη σύνδεση, επικοινωνήστε μαζί μας.",

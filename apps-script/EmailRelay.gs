@@ -1,5 +1,5 @@
 /**
- * OptikiTec Portal — Email Relay
+ * Demo Portal — Email Relay
  *
  * Μικρό, απομονωμένο Apps Script Web App. Η ΜΟΝΗ δουλειά του είναι να
  * στέλνει email μέσω MailApp όταν τον καλέσει ο Cloudflare Worker

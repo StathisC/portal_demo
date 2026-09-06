@@ -90,7 +90,7 @@ async function sendTeamReport(env, leader, { periodLabel, rangeStart, rangeEnd, 
 
   const result = await sendEmail(env, {
     to: [leader.Email],
-    subject: `OptikiTec Portal — ${periodLabel} αναφορά ομάδας (${rangeLabel})`,
+    subject: `Demo Portal — ${periodLabel} αναφορά ομάδας (${rangeLabel})`,
     html: emailTemplate({
       badge: `${periodLabel} αναφορά`,
       badgeColor: "blue",
@@ -203,7 +203,7 @@ async function sendAccountantMonthlyReport(env, { rangeStart, rangeEnd, rangeLab
 
   const result = await sendEmail(env, {
     to: directors.map((d) => d.Email),
-    subject: `OptikiTec Portal — Άδειες τεχνικών προς καταχώρηση (${rangeLabel})`,
+    subject: `Demo Portal — Άδειες τεχνικών προς καταχώρηση (${rangeLabel})`,
     html: emailTemplate({
       badge: "Μηνιαία αναφορά",
       badgeColor: "blue",
@@ -239,7 +239,7 @@ async function sendFleetComplianceAlert(env) {
 
   const result = await sendEmail(env, {
     to: directors.map((d) => d.Email),
-    subject: `OptikiTec Portal — ΚΤΕΟ/Service οχημάτων προς έλεγχο (${alerts.length})`,
+    subject: `Demo Portal — ΚΤΕΟ/Service οχημάτων προς έλεγχο (${alerts.length})`,
     html: emailTemplate({
       badge: "Στόλος",
       badgeColor: "red",
@@ -332,7 +332,7 @@ export async function sendDailyChargesDigest(env) {
     const linesHtml = dailyChargeLines(charges, today).join("<br>");
     const result = await sendEmail(env, {
       to: [leader.Email],
-      subject: `OptikiTec Portal — Χρεώσεις ημέρας (${fmtDateEl(today)})`,
+      subject: `Demo Portal — Χρεώσεις ημέρας (${fmtDateEl(today)})`,
       html: emailTemplate({
         badge: "Ημερήσια σύνοψη",
         badgeColor: "blue",

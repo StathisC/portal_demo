@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Bootstrap workbook για το portal-demo (κλώνος του OptikiTec Portal).
+Bootstrap workbook για το portal-demo (κλώνος του Demo Portal).
 Δημιουργεί ΟΛΑ τα απαιτούμενα sheet tabs με τη σωστή σειρά επικεφαλίδων,
 όπως ακριβώς τις διαβάζει/γράφει ο κώδικας (src/*.js _HEADER_ORDER
 constants) — όχι από ενδεχομένως ξεπερασμένο prose στο CLAUDE.md/SETUP.md.
